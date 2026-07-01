@@ -1,59 +1,97 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# HuruLearn Secondary Education Chatbot Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+HuruLearn is an AI-powered educational assistant designed for secondary school students in Tanzania. It bridges the digital divide by delivering curriculum-aligned academic tutoring through both **offline SMS (basic phones)** and an **online web application**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Core Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Offline SMS Chatbot (Africa's Talking Gateway)
+- **Keyword Trigger**: Handles inbound SMS requests routed from Africa's Talking gateway. It listens for messages beginning with the keyword `HURU` (case-insensitive), strips the prefix, processes the query, and replies via SMS.
+- **Auto-Language Detection**: Uses a built-in keyword detector ([LanguageDetector](app/Services/LanguageDetector.php)) to resolve whether the query is in English or Swahili, defaulting to Swahili if undetermined.
+- **Plain-Text Constraint Handling**: Implements custom prompt building ([PromptEngine](app/Services/PromptEngine.php)) that strictly forces the AI to output response blocks in 100% clean plain-text. **Markdown formatting and raw asterisks (`*`) are prohibited** to ensure optimal readability on basic mobile phones.
+- **Consistent Footers**: Appends branding footnotes: `"Msaidizi wa HuruLearn."` (Swahili) or `"HuruLearn Secondary Education."` (English).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Online Web Chat
+- **Instant Web Chat**: Accessible at `/chat`, allowing students with internet data to log in using their phone numbers and chat interactively with the AI tutor.
+- **History and Filters**: Allows filtering past chats by date and keyword search.
+- **Login Redirects**: If a guest attempts to access community forums, the application redirects them to the chat login screen while preserving their target URL. Once authenticated, they are automatically routed back to their destination.
 
-## Learning Laravel
+### 3. Community Discussion Boards
+- **Thread Forums**: Located at `/community`. Registered students can join public or private discussion threads, create new threads, and post comments or homework questions.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 4. Admin Management Dashboard
+- **Admin Portal**: Protected under basic HTTP authentication at `/admin`.
+- **System Settings**: Configure maximum word counts, maximum tokens, temperature, and maintenance message blocks.
+- **Prompt Template Editor**: Customize system instructions and templates dynamically per language.
+- **Curriculum Document Importer**: A versatile upload tool supporting **CSV**, **JSON**, and **TXT** files. Paragraph-divided txt files or json lists can be uploaded directly to populate the active secondary school syllabus database.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 5. Progressive Web App (PWA)
+- Custom PWA modal on the homepage welcomes mobile users, allowing them to install the web app directly onto their Android or iOS device home screen.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠 Tech Stack & Integration
+- **Framework**: [Laravel 12](https://laravel.com)
+- **Frontend**: [Vite](https://vite.dev) & [TailwindCSS v4](https://tailwindcss.com)
+- **Database**: MySQL (local development)
+- **AI Engine**: Google Gemini API via [AiService](app/Services/AiService.php). Powered by the fast `gemini-flash-lite-latest` model. Runs with local SSL certificate verification bypassed (`Http::withoutVerifying()`) to prevent environment handshake issues.
+- **SMS Gateway**: [Africa's Talking SDK](https://africastalking.com)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## ⚙️ Initial Setup & Commands
 
-## Contributing
+To get this project running on your local machine:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Environment Config**:
+   Configure database details and API credentials in your `.env` file:
+   ```env
+   DB_CONNECTION=mysql
+   DB_DATABASE=hurulearn_edu
+   DB_USERNAME=root
+   DB_PASSWORD=
 
-## Code of Conduct
+   # Africa's Talking API Credentials
+   AT_USERNAME=your_username
+   AT_API_KEY=your_api_key
+   AT_FROM=your_shortcode
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   # Gemini API Credentials
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
 
-## Security Vulnerabilities
+2. **Dependencies & Assets Setup**:
+   ```bash
+   composer install
+   npm install
+   npm run build
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. **Key and Database Migrations**:
+   Ensure MySQL is running, then execute:
+   ```bash
+   php artisan key:generate
+   php artisan migrate:fresh --seed
+   ```
+   *Seeding seeds standard settings, prompt templates, community threads, and comprehensive English (48 entries) and Swahili (36 entries) secondary school curriculum documents.*
 
-## License
+4. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. **Clear Configuration Cache**:
+   If you update `.env` settings, clear Laravel config cache:
+   ```bash
+   php artisan config:clear
+   ```
+
+---
+
+## 🧪 Testing
+
+The platform includes full feature tests verifying SMS incoming request parsing, jobs dispatching, AI mock loops, and community creation:
+```bash
+php artisan test
+```
