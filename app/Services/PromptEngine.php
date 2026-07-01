@@ -122,9 +122,19 @@ class PromptEngine
         $maxWords = \App\Models\SystemSetting::where('key', 'ai_max_words')->value('value') ?? 320;
 
         if ($language === 'sw') {
-            return "MASHARTI MUHIMU:\n- LAZIMA utambue lugha aliyotumia mwanafunzi na ujibu kwa lugha HIYO HIYO aliyouliza (Kiswahili kama ameuliza kwa Kiswahili, Kiingereza kama ameuliza kwa Kiingereza).\n- Jibu kwa ufupi na ukamilifu (Max maneno {$maxWords}).\n- USIWEKE salamu wala maongezi yasiyo ya kimasomo.";
+            return "MASHARTI MUHIMU:\n" .
+                   "- LAZIMA utambue lugha aliyotumia mwanafunzi na ujibu kwa lugha HIYO HIYO aliyouliza (Kiswahili kama ameuliza kwa Kiswahili, Kiingereza kama ameuliza kwa Kiingereza).\n" .
+                   "- Jibu kwa ufupi na ukamilifu (Max maneno {$maxWords}).\n" .
+                   "- USIWEKE salamu wala maongezi yasiyo ya kimasomo.\n" .
+                   "- LAZIMA uandike jibu lako kwa maandishi ya kawaida (plain text) pekee. USITUMIE alama za asterisks au nyota (*) hata kidogo (kama vile **bold** au *italics* au * orodha za bullet). Hakikisha hakuna herufi yoyote ya nyota (*) katika jibu lako lote.\n" .
+                   "- LAZIMA uhitimishe jibu lako kwa kuweka saini fupi sana mwishoni kabisa: \"Msaidizi wa HuruLearn.\"";
         }
 
-        return "STRICT CONSTRAINTS:\n- YOU MUST detect the exact language of the student's question and respond entirely in that SAME language (English or Swahili).\n- Respond briefly and completely (Max {$maxWords} words).\n- DO NOT include greetings or extra conversation.";
+        return "STRICT CONSTRAINTS:\n" .
+               "- YOU MUST detect the exact language of the student's question and respond entirely in that SAME language (English or Swahili).\n" .
+               "- Respond briefly and completely (Max {$maxWords} words).\n" .
+               "- DO NOT include greetings or extra conversation.\n" .
+               "- YOU MUST write your response in 100% clean plain text. DO NOT use any asterisks (*) or markdown formatting (like **bold**, *italics*, or * lists) under any circumstances. Ensure there are absolutely no asterisk characters (*) in your entire response.\n" .
+               "- YOU MUST conclude your response with a very brief sign-off at the end: \"HuruLearn Secondary Education.\"";
     }
 }

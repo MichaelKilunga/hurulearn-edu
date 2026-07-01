@@ -282,6 +282,27 @@
             color: #ef4444;
         }
 
+        .btn-community {
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid rgba(20, 184, 166, 0.25);
+            color: #2dd4bf;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-community:hover {
+            background: rgba(20, 184, 166, 0.2);
+            border-color: #2dd4bf;
+            color: #5eead4;
+        }
+
         .chat-messages {
             flex: 1;
             padding: 2rem 1.5rem;
@@ -465,6 +486,11 @@
                 <h1>HuruLearn AI</h1>
                 <p>Register with your phone number to start asking questions directly to our AI tutor.</p>
             </div>
+            @if(session('error'))
+                <div class="auth-error-alert" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 12px; color: #fca5a5; margin-bottom: 1.5rem; font-size: .85rem; font-weight: 500; text-align: center;">
+                    {{ session('error') }}
+                </div>
+            @endif
             <form id="login-form">
                 @csrf
                 <div class="input-group">
@@ -491,7 +517,10 @@
                     <span class="status">Online & Ready</span>
                 </div>
             </div>
-            <button id="logout-btn" class="btn-logout">Logout</button>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <a href="{{ route('community.index') }}" class="btn-community">🌱 Community</a>
+                <button id="logout-btn" class="btn-logout">Logout</button>
+            </div>
         </div>
         <div class="filter-bar">
             <div class="filter-group">
@@ -543,6 +572,12 @@
                 const res = await fetch(`/chat/messages?${params}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                 const data = await res.json();
                 if (data.status === 'success') {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectUrl = urlParams.get('redirect');
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                        return;
+                    }
                     showChat(data.messages, !!params);
                 }
             } catch (err) { console.error('Failed to load messages', err); }
@@ -582,6 +617,12 @@
                 });
                 const data = await res.json();
                 if (data.status === 'success') {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectUrl = urlParams.get('redirect');
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                        return;
+                    }
                     const msgRes = await fetch('/chat/messages', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
                     const msgData = await msgRes.json();
                     showChat(msgData.messages);
@@ -642,7 +683,7 @@
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
-            location.reload();
+            window.location.href = '/';
         });
 
         function showChat(messages = [], isSearchResult = false) {
