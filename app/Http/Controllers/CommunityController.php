@@ -25,7 +25,16 @@ class CommunityController extends Controller
         $publicThreads = CommunityThread::where('is_private', false)->latest()->get();
         $joinedThreads = $user->joinedThreads()->latest()->get();
 
-        return view('community.index', compact('publicThreads', 'joinedThreads'));
+        // Pending invites for the user
+        $pendingInvites = \App\Models\CommunityInvite::where('invitee_id', $userId)
+            ->where('status', 'pending')
+            ->where(function($q) {
+                $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+            })
+            ->with(['thread', 'inviter'])
+            ->get();
+
+        return view('community.index', compact('publicThreads', 'joinedThreads', 'pendingInvites'));
     }
 
     public function show(CommunityThread $thread)
@@ -131,5 +140,102 @@ class CommunityController extends Controller
         // This should be protected by admin middleware
         $post->update(['is_approved' => !$post->is_approved]);
         return back()->with('success', 'Post approval toggled.');
+    }
+
+    public function inviteStudent(Request $request, CommunityThread $thread)
+    {
+        $userId = session('chat_user_id');
+        if (!$userId) return redirect()->route('chat.index')->with('error', 'Please login to send invites.');
+
+        $request->validate([
+            'phone_number' => 'required|string|min:10',
+        ]);
+
+        $phoneNumber = $request->phone_number;
+        // Basic normalization
+        if (!str_starts_with($phoneNumber, '+')) {
+            if (str_starts_with($phoneNumber, '0')) {
+                $phoneNumber = '+255' . substr($phoneNumber, 1);
+            } else {
+                $phoneNumber = '+' . $phoneNumber;
+            }
+        }
+
+        $invitee = User::where('phone_number', $phoneNumber)->first();
+        if (!$invitee) {
+            return back()->with('error', 'Student with this phone number is not registered yet.');
+        }
+
+        if ($invitee->id === (int) $userId) {
+            return back()->with('error', 'You cannot invite yourself.');
+        }
+
+        // Check if already a member
+        if ($thread->members->contains($invitee)) {
+            return back()->with('error', 'This student is already a member of this thread.');
+        }
+
+        // Check for active invite
+        $existingInvite = \App\Models\CommunityInvite::where('community_thread_id', $thread->id)
+            ->where('invitee_id', $invitee->id)
+            ->where('status', 'pending')
+            ->where('expires_at', '>', now())
+            ->first();
+
+        if ($existingInvite) {
+            return back()->with('error', 'An invitation has already been sent to this student.');
+        }
+
+        \App\Models\CommunityInvite::create([
+            'community_thread_id' => $thread->id,
+            'inviter_id' => $userId,
+            'invitee_id' => $invitee->id,
+            'status' => 'pending',
+            'expires_at' => now()->addDays(7),
+        ]);
+
+        return back()->with('success', 'Invitation sent successfully.');
+    }
+
+    public function acceptInvite(Request $request, $token)
+    {
+        $userId = session('chat_user_id');
+        if (!$userId) {
+            return redirect()->route('chat.index', ['redirect' => route('community.invites.accept', $token)])
+                ->with('error', 'Please login to accept your invite.');
+        }
+
+        $invite = \App\Models\CommunityInvite::where('token', $token)->firstOrFail();
+
+        if ($invite->status !== 'pending' || ($invite->expires_at && $invite->expires_at->isPast())) {
+            return redirect()->route('community.index')->with('error', 'This invitation has expired or been accepted.');
+        }
+
+        if ($invite->invitee_id !== (int) $userId) {
+            return redirect()->route('community.index')->with('error', 'This invitation was not sent to you.');
+        }
+
+        $thread = $invite->thread;
+        $thread->members()->syncWithoutDetaching([$userId => ['role' => 'member']]);
+
+        $invite->update(['status' => 'accepted']);
+
+        return redirect()->route('community.show', $thread->slug)->with('success', "Joined thread: {$thread->title}");
+    }
+
+    public function rejectInvite(Request $request, $token)
+    {
+        $userId = session('chat_user_id');
+        if (!$userId) return redirect()->route('chat.index');
+
+        $invite = \App\Models\CommunityInvite::where('token', $token)->firstOrFail();
+
+        if ($invite->invitee_id !== (int) $userId) {
+            return back()->with('error', 'This invitation was not sent to you.');
+        }
+
+        $invite->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Invitation declined.');
     }
 }

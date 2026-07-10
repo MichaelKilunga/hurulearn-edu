@@ -1,19 +1,74 @@
+const CACHE_NAME = 'hurulearn-cache-v1';
+const OFFLINE_URL = '/offline';
+
+const ASSETS_TO_CACHE = [
+    OFFLINE_URL,
+    '/',
+    '/logo.svg',
+    '/favicon.ico',
+    '/manifest.json'
+];
+
 self.addEventListener('install', (event) => {
-    // Force the waiting service worker to become the active service worker.
-    self.skipWaiting();
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(ASSETS_TO_CACHE);
+        }).then(() => self.skipWaiting())
+    );
 });
 
 self.addEventListener('activate', (event) => {
-    // Claim the clients to ensure the service worker controls the page immediately.
-    event.waitUntil(clients.claim());
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => clients.claim())
+    );
 });
 
 self.addEventListener('fetch', (event) => {
-    // Simple fetch listener to pass the PWA install check.
-    // In a real offline app, you would use Caches API here.
+    // Skip non-GET requests
+    if (event.request.method !== 'GET') {
+        return;
+    }
+
+    // Skip API routes, admin paths, and livewire requests
+    const url = new URL(event.request.url);
+    if (url.pathname.startsWith('/api') || 
+        url.pathname.startsWith('/admin') || 
+        url.pathname.startsWith('/chat/') || 
+        url.pathname.includes('/livewire')) {
+        return;
+    }
+
     event.respondWith(
-        fetch(event.request).catch(error => {
-            return new Response('Offline mode');
-        })
+        fetch(event.request)
+            .then((response) => {
+                // If response is valid, cache it dynamically for future offline use
+                if (response.status === 200 && response.type === 'basic') {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+                }
+                return response;
+            })
+            .catch(() => {
+                // Network failed, try to serve from cache
+                return caches.match(event.request).then((cachedResponse) => {
+                    if (cachedResponse) {
+                        return cachedResponse;
+                    }
+                    // If the request was for page navigation, return the offline fallback page
+                    if (event.request.mode === 'navigate') {
+                        return caches.match(OFFLINE_URL);
+                    }
+                });
+            })
     );
 });

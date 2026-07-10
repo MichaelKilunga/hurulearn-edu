@@ -128,6 +128,23 @@
                     @endforeach
                 </div>
             </div>
+            @if($thread->is_private)
+            <div class="sidebar-section" style="margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.5rem;">
+                <h4>Invite Student</h4>
+                @if(session('success'))
+                    <div style="color: #34d399; font-size: .8rem; margin-bottom: .8rem;">{{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div style="color: #f87171; font-size: .8rem; margin-bottom: .8rem;">{{ session('error') }}</div>
+                @endif
+                <form action="{{ route('community.invite', $thread->slug) }}" method="POST" style="display: flex; flex-direction: column; gap: .8rem;">
+                    @csrf
+                    <input type="text" name="phone_number" placeholder="Phone e.g. 07XXXXXXXX" required 
+                           style="width: 100%; padding: .5rem .8rem; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.1); color: #fff; font-size: .85rem; outline: none; transition: border-color .2s;">
+                    <button type="submit" style="width: 100%; padding: .5rem; border-radius: 8px; border: none; background: var(--blue); color: #fff; font-size: .85rem; font-weight: 600; cursor: pointer; transition: background .2s;">Send Invite</button>
+                </form>
+            </div>
+            @endif
         </aside>
 
         <main class="main-chat">

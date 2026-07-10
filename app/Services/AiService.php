@@ -57,7 +57,9 @@ class AiService
             $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
             $finishReason = $data['candidates'][0]['finishReason'] ?? null;
 
-            if (!$text && $finishReason === 'SAFETY') {
+            $sanitizedText = $text ? $this->sanitizeResponseText($text) : null;
+
+            if (!$sanitizedText && $finishReason === 'SAFETY') {
                 return [
                     'text' => 'BANNED_CONTENT_DETECTED',
                     'tokens' => $data['usageMetadata'] ?? null,
@@ -66,7 +68,7 @@ class AiService
             }
 
             return [
-                'text' => trim($text ?? 'Samahani, sikuelewa.'),
+                'text' => $sanitizedText ?? 'Samahani, sikuelewa.',
                 'tokens' => $data['usageMetadata'] ?? null,
                 'model' => 'gemini-flash-lite-latest'
             ];
@@ -78,5 +80,22 @@ class AiService
                 'tokens' => null
             ];
         }
+    }
+
+    public function sanitizeResponseText(string $text): string
+    {
+        // 1. Convert markdown lists like "* Item" or "- Item" to simple text
+        $text = preg_replace('/^\s*[\*\-]\s+/m', '- ', $text);
+
+        // 2. Remove all asterisks (bold, italics, or stray)
+        $text = str_replace('*', '', $text);
+
+        // 3. Remove backticks
+        $text = str_replace('`', '', $text);
+
+        // 4. Clean up headers (e.g., "# Title" -> "Title")
+        $text = preg_replace('/^\s*#+\s+/m', '', $text);
+
+        return trim($text);
     }
 }

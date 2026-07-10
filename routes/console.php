@@ -11,3 +11,7 @@ Artisan::command('inspire', function () {
 Schedule::command('queue:work --stop-when-empty')
     ->everyMinute()
     ->withoutOverlapping();
+
+Schedule::command('hurulearn:send-weekly-reports')
+    ->weeklyOn(7, '18:00') // Sunday at 6:00 PM
+    ->withoutOverlapping();

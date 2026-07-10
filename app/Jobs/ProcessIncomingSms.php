@@ -137,8 +137,7 @@ class ProcessIncomingSms implements ShouldQueue
         // Africa's Talking requires the keyword prefix on outbound messages that
         // originate from a shared short code so the reply is routed correctly.
         // ---------------------------------------------------------------------------
-        // $outboundText = 'HURU ' . $aiResponseText;
-        $outboundText = $aiResponseText;
+        $outboundText = 'HURU ' . $aiResponseText;
 
         // 5. Send SMS
         $smsService->send($this->from, $outboundText);
@@ -163,5 +162,10 @@ class ProcessIncomingSms implements ShouldQueue
             'total_tokens' => $aiResult['tokens']['totalTokenCount'] ?? 0,
         ]);
         Log::info("User " . $user->phone_number . " message logged");
+
+        // Track Learning Session
+        $subject = \App\Models\LearningSession::resolveSubjectFromQuery($this->text);
+        $tokens = $aiResult['tokens']['totalTokenCount'] ?? 0;
+        \App\Models\LearningSession::trackMessage($user->id, $subject, $tokens);
     }
 }

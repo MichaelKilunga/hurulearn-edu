@@ -522,6 +522,18 @@
                 <button id="logout-btn" class="btn-logout">Logout</button>
             </div>
         </div>
+        <!-- Weekly Learning Progress Stats Card -->
+        <div id="stats-banner" style="background: rgba(245,158,11,0.08); border-bottom: 1px solid rgba(245,158,11,0.2); padding: 0.8rem 1.5rem; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.03);">
+            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent);">
+                <span>📊</span>
+                <strong>Your Progress this week:</strong>
+                <span id="stats-summary-text">Loading weekly study stats...</span>
+            </div>
+            <a href="{{ route('curriculum.index') }}" style="color: var(--blue-light); text-decoration: none; font-weight: 600; font-size: 0.8rem; display: flex; align-items: center; gap: 4px;">
+                Browse Syllabus
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
         <div class="filter-bar">
             <div class="filter-group">
                 <input type="text" id="keyword-search" placeholder="Search keywords..." aria-label="Search keywords">
@@ -686,7 +698,25 @@
             window.location.href = '/';
         });
 
+        async function loadWeeklyStats() {
+            try {
+                const res = await fetch('/chat/stats', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    const bannerText = document.getElementById('stats-summary-text');
+                    if (data.session_count === 0) {
+                        bannerText.innerHTML = "No study sessions completed yet. Start asking questions to learn!";
+                    } else {
+                        const subs = Object.keys(data.subjects);
+                        const subjectsList = subs.length === 0 ? 'General Studies' : subs.join(', ');
+                        bannerText.innerHTML = `Completed <strong>${data.session_count} sessions</strong> (${data.message_count} messages) in <strong>${subjectsList}</strong>.`;
+                    }
+                }
+            } catch (err) { console.error('Failed to load stats', err); }
+        }
+
         function showChat(messages = [], isSearchResult = false) {
+            loadWeeklyStats();
             authScreen.classList.remove('active');
             chatScreen.classList.add('active');
             chatMessages.innerHTML = '';

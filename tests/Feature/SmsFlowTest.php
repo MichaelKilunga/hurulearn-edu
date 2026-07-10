@@ -50,7 +50,7 @@ class SmsFlowTest extends TestCase
         $this->mock(SmsService::class, function (MockInterface $mock) {
             $mock->shouldReceive('send')
                  ->once()
-                 ->with('+254700000000', 'Photosynthesis is how plants make food.')
+                 ->with('+254700000000', 'HURU Photosynthesis is how plants make food.')
                  ->andReturn(['status' => 'success']);
         });
 
@@ -82,7 +82,7 @@ class SmsFlowTest extends TestCase
 
         $this->assertDatabaseHas('messages', [
             'direction' => 'outbound',
-            'content' => 'Photosynthesis is how plants make food.',
+            'content' => 'HURU Photosynthesis is how plants make food.',
         ]);
 
         $aiLog = AiLog::first();

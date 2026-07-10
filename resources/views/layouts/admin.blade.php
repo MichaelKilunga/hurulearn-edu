@@ -183,6 +183,24 @@
             .mobile-menu-btn { display: flex !important; }
         }
         .mobile-menu-btn { display: none; background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 1.3rem; }
+        
+        /* TOPBAR PROFILE */
+        .topbar-profile {
+            display: flex; align-items: center; gap: 0.75rem;
+            margin-left: 1rem; border-left: 1px solid rgba(255,255,255,0.1); padding-left: 1rem;
+        }
+        .topbar-profile-info { text-align: right; }
+        .topbar-profile-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
+        .topbar-profile-role { font-size: 0.65rem; color: var(--gray-500); }
+        .topbar-profile-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--blue));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: #fff; text-transform: uppercase;
+        }
+        @media (max-width: 576px) {
+            .topbar-profile-info { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -216,8 +234,16 @@
             <span class="sidebar-icon">🌐</span> View Landing Page
         </a>
     </nav>
-    <div class="sidebar-footer">
+    <div class="sidebar-footer" style="display: flex; flex-direction: column; gap: 0.5rem;">
         <a href="/">← Back to Public Site</a>
+        @if(auth()->check())
+            <form action="{{ route('admin.logout') }}" method="POST" id="logout-form" style="margin-top: 0.25rem;">
+                @csrf
+                <button type="submit" style="background: none; border: none; color: var(--gray-500); font-size: .8rem; cursor: pointer; display: flex; align-items: center; gap: .6rem; width: 100%; text-align: left; padding: 0.2rem 0; font-family: inherit; transition: color .2s; outline: none;" onmouseover="this.style.color='var(--gray-300)'" onmouseout="this.style.color='var(--gray-500)'">
+                    <span style="font-size: 0.9rem;">🚪</span> Logout
+                </button>
+            </form>
+        @endif
     </div>
 </aside>
 
@@ -227,7 +253,7 @@
         <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
         <span class="topbar-title">{{ $title ?? 'Dashboard' }}</span>
     </div>
-    <div class="topbar-right">
+    <div class="topbar-right" style="display: flex; align-items: center;">
         @php $aiEnabled = \App\Models\SystemSetting::where('key', 'ai_enabled')->value('value') ?? '1'; @endphp
         @if($aiEnabled == '1')
             <div class="topbar-badge">Live SMS Active</div>
@@ -235,6 +261,18 @@
             <div class="topbar-badge" style="background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #fca5a5;">
                 <style>.topbar-badge::before { display: none; }</style>
                 <span>⏸️</span> AI Paused
+            </div>
+        @endif
+
+        @if(auth()->check())
+            <div class="topbar-profile">
+                <div class="topbar-profile-info">
+                    <div class="topbar-profile-name">{{ auth()->user()->name }}</div>
+                    <div class="topbar-profile-role">Administrator</div>
+                </div>
+                <div class="topbar-profile-avatar" title="{{ auth()->user()->name }} (Administrator)">
+                    {{ substr(auth()->user()->name, 0, 1) }}
+                </div>
             </div>
         @endif
     </div>

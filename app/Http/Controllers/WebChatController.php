@@ -192,6 +192,11 @@ class WebChatController extends Controller
             'total_tokens' => $aiResult['tokens']['totalTokenCount'] ?? 0,
         ]);
 
+        // Track Learning Session
+        $subject = \App\Models\LearningSession::resolveSubjectFromQuery($text);
+        $tokens = $aiResult['tokens']['totalTokenCount'] ?? 0;
+        \App\Models\LearningSession::trackMessage($user->id, $subject, $tokens);
+
         return response()->json([
             'status' => 'success',
             'user_message' => $inboundMessage,
@@ -203,5 +208,32 @@ class WebChatController extends Controller
     {
         session()->forget('chat_user_id');
         return response()->json(['status' => 'success']);
+    }
+
+    public function getStats()
+    {
+        $userId = session('chat_user_id');
+        if (!$userId) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 401);
+        }
+
+        $sessions = \App\Models\LearningSession::where('user_id', $userId)
+            ->where('started_at', '>=', now()->subDays(7))
+            ->get();
+
+        $sessionCount = $sessions->count();
+        $messageCount = $sessions->sum('message_count');
+        
+        // Group and count subjects
+        $subjectsBreakdown = $sessions->groupBy('subject')
+            ->map(fn($group) => $group->count())
+            ->toArray();
+
+        return response()->json([
+            'status' => 'success',
+            'session_count' => $sessionCount,
+            'message_count' => $messageCount,
+            'subjects' => $subjectsBreakdown,
+        ]);
     }
 }

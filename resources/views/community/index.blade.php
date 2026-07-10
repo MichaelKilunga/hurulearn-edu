@@ -115,6 +115,31 @@
             </div>
         @endif
 
+        @if(isset($pendingInvites) && $pendingInvites->count() > 0)
+            <div class="section-title"><span></span> Private Invites</div>
+            <div class="grid" style="margin-bottom: 3rem;">
+                @foreach($pendingInvites as $invite)
+                <div class="card" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.02);">
+                    <div>
+                        <span class="tag" style="background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3);">
+                            Invitation
+                        </span>
+                        <h3>{{ $invite->thread->title }}</h3>
+                        <p style="margin-bottom: 1rem;">Invited by: <strong>{{ $invite->inviter->name ?? $invite->inviter->phone_number }}</strong></p>
+                        <p style="font-size: .85rem; line-height: 1.5;">{{ Str::limit($invite->thread->description, 80) }}</p>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <a href="{{ route('community.invites.accept', $invite->token) }}" class="btn btn-primary" style="flex: 1; padding: .6rem; font-size: .85rem;">Accept</a>
+                        <form action="{{ route('community.invites.reject', $invite->token) }}" method="POST" style="flex: 1;">
+                            @csrf
+                            <button type="submit" class="btn btn-outline" style="width: 100%; padding: .6rem; font-size: .85rem; color: #f87171; border-color: rgba(248,113,113,0.3);">Decline</button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        @endif
+
         @if($joinedThreads->count() > 0)
             <div class="section-title"><span></span> Your Threads</div>
             <div class="grid">
