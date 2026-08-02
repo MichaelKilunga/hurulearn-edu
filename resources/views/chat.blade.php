@@ -469,6 +469,151 @@
             50% { transform: translateY(-5px); opacity: 1; }
         }
 
+        /* ── Audio Feature Styles ────────────────────────────── */
+
+        /* Microphone Button */
+        .btn-mic {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text-muted);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .btn-mic:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+        .btn-mic.recording {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            animation: mic-pulse 1.2s infinite ease-in-out;
+        }
+        .btn-mic.unsupported {
+            display: none;
+        }
+
+        @keyframes mic-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50%       { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+        }
+
+        /* Auto-Read Toggle Button */
+        .btn-auto-read {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-auto-read:hover {
+            background: rgba(167, 139, 250, 0.1);
+            border-color: rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+        }
+        .btn-auto-read.active {
+            background: rgba(167, 139, 250, 0.15);
+            border-color: rgba(167, 139, 250, 0.5);
+            color: #c4b5fd;
+        }
+
+        /* Read-Aloud Button on AI message bubbles */
+        .message-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            max-width: 85%;
+        }
+        .message-wrapper.outbound-wrapper {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+        .message-wrapper .message {
+            max-width: 100%;
+        }
+        .btn-read-aloud {
+            background: transparent;
+            border: none;
+            color: rgba(156, 163, 175, 0.6);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .btn-read-aloud:hover {
+            color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        .btn-read-aloud.speaking {
+            color: #a78bfa;
+        }
+        .btn-read-aloud .wave {
+            display: inline-flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 12px;
+        }
+        .btn-read-aloud .wave span {
+            display: inline-block;
+            width: 2px;
+            background: #a78bfa;
+            border-radius: 2px;
+            animation: wave-bar 0.8s infinite ease-in-out;
+        }
+        .btn-read-aloud .wave span:nth-child(1) { height: 5px; animation-delay: 0s; }
+        .btn-read-aloud .wave span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+        .btn-read-aloud .wave span:nth-child(3) { height: 7px; animation-delay: 0.3s; }
+        .btn-read-aloud .wave span:nth-child(4) { height: 10px; animation-delay: 0.45s; }
+        .btn-read-aloud .wave span:nth-child(5) { height: 5px; animation-delay: 0.6s; }
+
+        @keyframes wave-bar {
+            0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+            50%       { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Mic status banner */
+        #mic-status-banner {
+            padding: 0.5rem 1.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-top: 1px solid rgba(239, 68, 68, 0.2);
+            font-size: 0.8rem;
+            color: #fca5a5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+        #mic-status-banner .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: mic-pulse 1s infinite;
+            flex-shrink: 0;
+        }
+
         /* Mobile Adjustments */
         @media (max-width: 600px) {
             .chat-container { max-width: 100%; border-radius: 0; }
@@ -517,7 +662,8 @@
                     <span class="status">Online & Ready</span>
                 </div>
             </div>
-            <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                <button id="auto-read-toggle" class="btn-auto-read" title="Auto-read AI responses aloud">🔊 Auto</button>
                 <a href="{{ route('community.index') }}" class="btn-community">🌱 Community</a>
                 <button id="logout-btn" class="btn-logout">Logout</button>
             </div>
@@ -551,9 +697,15 @@
         <div id="typing-indicator" class="typing-indicator hidden">
             <span></span><span></span><span></span>
         </div>
+        {{-- Mic recording status banner --}}
+        <div id="mic-status-banner" style="display:none;">
+            <span class="pulse-dot"></span>
+            <span id="mic-status-text">Listening... Speak your question</span>
+        </div>
         <form id="chat-form" class="chat-input-area">
             @csrf
-            <input type="text" id="message-input" placeholder="Ask a question..." autocomplete="off">
+            <button type="button" id="mic-btn" class="btn-mic" title="Speak your question">🎤</button>
+            <input type="text" id="message-input" placeholder="Ask a question or tap 🎤 to speak..." autocomplete="off">
             <button type="submit" id="send-btn" class="btn-send">
                 <svg viewBox="0 0 24 24" width="24" height="24" style="transform: rotate(45deg);"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"></path></svg>
             </button>
@@ -739,16 +891,225 @@
         }
 
         function addMessageToUi(msg) {
+            const isAi = msg.direction === 'outbound';
+
+            // Create wrapper for layout (message + optional read-aloud button)
+            const wrapper = document.createElement('div');
+            wrapper.className = `message-wrapper ${isAi ? 'outbound-wrapper' : ''}`;
+
             const div = document.createElement('div');
-            div.className = `message ${msg.direction === 'inbound' ? 'inbound' : 'outbound'}`;
+            div.className = `message ${isAi ? 'outbound' : 'inbound'}`;
             // Simple newline to <br> conversion
             div.innerHTML = msg.content.replace(/\n/g, '<br>');
-            chatMessages.appendChild(div);
+            wrapper.appendChild(div);
+
+            // Add "Read Aloud" button only for AI (outbound) messages
+            if (isAi) {
+                const readBtn = document.createElement('button');
+                readBtn.className = 'btn-read-aloud';
+                readBtn.title = 'Read aloud';
+                readBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read`;
+                readBtn.addEventListener('click', () => {
+                    const textContent = msg.content.replace(/<br>/g, '\n');
+                    if (readBtn.classList.contains('speaking')) {
+                        audioEngine.stop();
+                    } else {
+                        audioEngine.speak(textContent, readBtn);
+                    }
+                });
+                wrapper.appendChild(readBtn);
+
+                // Auto-read if toggle is active
+                if (autoReadEnabled) {
+                    setTimeout(() => audioEngine.speak(msg.content, readBtn), 300);
+                }
+            }
+
+            chatMessages.appendChild(wrapper);
         }
 
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
+
+        // ══════════════════════════════════════════════════════════
+        //  AUDIO ENGINE  —  Speech Recognition (STT) + Synthesis (TTS)
+        // ══════════════════════════════════════════════════════════
+
+        let autoReadEnabled = false;
+
+        // ── Text-to-Speech (TTS) ─────────────────────────────────
+        const audioEngine = {
+            utterance: null,
+            activeBtn: null,
+
+            speak(text, btn) {
+                // Cancel any ongoing speech first
+                this.stop();
+
+                // Strip HTML tags for clean reading
+                const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+                const utter = new SpeechSynthesisUtterance(clean);
+
+                // Language detection: if text has Swahili-typical words use 'sw', else 'en'
+                const swWords = /\b(na|ya|wa|kwa|ni|la|za|cha|mwa|katika|kuhusu|jinsi|kwamba|lakini|pia|au|hii|hizo|hao|yote|zote|wake|wao|yake|yao|hata|bali|baada|kabla|sasa|tena|bado|tu|sana|zaidi|kidogo|vizuri|ndiyo|hapana|samahani|habari|asante|tafadhali)\b/i;
+                utter.lang = swWords.test(clean) ? 'sw-TZ' : 'en-US';
+                utter.rate = 0.95;
+                utter.pitch = 1;
+
+                // Pick a natural voice if available
+                const voices = speechSynthesis.getVoices();
+                const preferred = voices.find(v => v.lang.startsWith(utter.lang.slice(0, 2))) ||
+                                  voices.find(v => v.lang.startsWith('en'));
+                if (preferred) utter.voice = preferred;
+
+                this.utterance = utter;
+                this.activeBtn = btn;
+
+                if (btn) {
+                    btn.classList.add('speaking');
+                    btn.innerHTML = `<span class="wave"><span></span><span></span><span></span><span></span><span></span></span> Stop`;
+                }
+
+                utter.onend = () => this._resetBtn(btn);
+                utter.onerror = () => this._resetBtn(btn);
+
+                speechSynthesis.speak(utter);
+            },
+
+            stop() {
+                speechSynthesis.cancel();
+                if (this.activeBtn) this._resetBtn(this.activeBtn);
+                this.activeBtn = null;
+                this.utterance = null;
+            },
+
+            _resetBtn(btn) {
+                if (!btn) return;
+                btn.classList.remove('speaking');
+                btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read`;
+            }
+        };
+
+        // Preload voices (needed in Chrome where voice list loads async)
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+        speechSynthesis.getVoices();
+
+        // ── Auto-Read Toggle ──────────────────────────────────────
+        const autoReadToggle = document.getElementById('auto-read-toggle');
+        if (autoReadToggle) {
+            autoReadToggle.addEventListener('click', () => {
+                autoReadEnabled = !autoReadEnabled;
+                autoReadToggle.classList.toggle('active', autoReadEnabled);
+                autoReadToggle.textContent = autoReadEnabled ? '🔊 Auto: ON' : '🔊 Auto';
+                autoReadToggle.title = autoReadEnabled ? 'Click to turn off auto-read' : 'Auto-read AI responses aloud';
+                if (!autoReadEnabled) audioEngine.stop();
+            });
+        }
+
+        // ── Speech Recognition (STT) ──────────────────────────────
+        const micBtn = document.getElementById('mic-btn');
+        const micStatusBanner = document.getElementById('mic-status-banner');
+        const micStatusText = document.getElementById('mic-status-text');
+
+        const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognitionAPI) {
+            // Hide mic button gracefully on unsupported browsers
+            if (micBtn) micBtn.classList.add('unsupported');
+        } else {
+            let recognition = null;
+            let isRecording = false;
+
+            function buildRecognition() {
+                const rec = new SpeechRecognitionAPI();
+                rec.continuous = false;
+                rec.interimResults = true;
+
+                // Match recognition language to current TTS guess
+                // Default to Swahili since the app targets Tanzania
+                rec.lang = 'sw-TZ';
+
+                rec.onstart = () => {
+                    isRecording = true;
+                    micBtn.classList.add('recording');
+                    micBtn.title = 'Stop recording';
+                    micBtn.textContent = '⏹';
+                    micStatusBanner.style.display = 'flex';
+                    micStatusText.textContent = 'Listening... Speak your question';
+                    // Stop any active TTS while recording
+                    audioEngine.stop();
+                };
+
+                rec.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+                    // Show interim results in the input as preview
+                    messageInput.value = finalTranscript || interimTranscript;
+                    if (interimTranscript) {
+                        micStatusText.textContent = `Hearing: "${interimTranscript}"`;
+                    }
+                };
+
+                rec.onspeechend = () => {
+                    rec.stop();
+                };
+
+                rec.onend = () => {
+                    isRecording = false;
+                    micBtn.classList.remove('recording');
+                    micBtn.title = 'Speak your question';
+                    micBtn.textContent = '🎤';
+                    micStatusBanner.style.display = 'none';
+
+                    // If we got text, auto-focus the input so user can review + send
+                    if (messageInput.value.trim()) {
+                        messageInput.focus();
+                        micStatusText.textContent = 'Listening... Speak your question';
+                    }
+                };
+
+                rec.onerror = (event) => {
+                    isRecording = false;
+                    micBtn.classList.remove('recording');
+                    micBtn.title = 'Speak your question';
+                    micBtn.textContent = '🎤';
+
+                    let msg = 'Could not hear you. Please try again.';
+                    if (event.error === 'not-allowed') msg = 'Microphone access denied. Please allow microphone in your browser settings.';
+                    else if (event.error === 'network') msg = 'Network error during voice recognition.';
+                    else if (event.error === 'no-speech') msg = 'No speech detected. Tap 🎤 to try again.';
+
+                    micStatusText.textContent = msg;
+                    setTimeout(() => { micStatusBanner.style.display = 'none'; }, 3500);
+                };
+
+                return rec;
+            }
+
+            micBtn.addEventListener('click', () => {
+                if (isRecording) {
+                    if (recognition) recognition.stop();
+                } else {
+                    recognition = buildRecognition();
+                    try {
+                        recognition.start();
+                    } catch (err) {
+                        console.error('SpeechRecognition start error:', err);
+                    }
+                }
+            });
+        }
+
     });
 </script>
 </body>

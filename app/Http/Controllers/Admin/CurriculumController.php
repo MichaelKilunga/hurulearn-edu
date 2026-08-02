@@ -11,9 +11,24 @@ use Illuminate\Support\Str;
 
 class CurriculumController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $curriculums = Curriculum::latest()->paginate(15);
+        $query = Curriculum::query();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('summary', 'like', "%{$search}%")
+                  ->orWhere('tags', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('language')) {
+            $query->where('language', $request->input('language'));
+        }
+
+        $curriculums = $query->latest()->paginate(15)->withQueryString();
         return view('admin.curriculum.index', compact('curriculums'));
     }
 

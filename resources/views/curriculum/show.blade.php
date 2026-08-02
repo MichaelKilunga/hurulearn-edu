@@ -41,20 +41,42 @@
         /* Left Panel: Reading Material */
         .reading-panel {
             flex: 1.2; padding: 3rem; overflow-y: auto; background: rgba(255,255,255,0.01);
-            border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 2rem;
-            scrollbar-width: thin;
+            border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 1.8rem;
+            scrollbar-width: thin; position: relative;
         }
         .reading-panel::-webkit-scrollbar { width: 6px; }
         .reading-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
         
-        .reading-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; line-height: 1.3; background: linear-gradient(135deg, #fff, var(--gray-400)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .reading-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; line-height: 1.3; background: linear-gradient(135deg, #white 30%, var(--gray-400)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
         .reading-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
         .tag-pill { font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--gray-400); text-transform: uppercase; font-weight: 600; }
 
-        .reading-summary { border-left: 3px solid var(--amber); padding-left: 1.2rem; margin: 1.5rem 0; font-style: italic; color: var(--gray-400); font-size: 0.98rem; line-height: 1.6; }
+        .reading-summary { border-left: 3px solid var(--amber); padding-left: 1.2rem; margin: 0.5rem 0; font-style: italic; color: var(--gray-400); font-size: 0.98rem; line-height: 1.6; }
         
-        .reading-body { font-size: 1.1rem; line-height: 1.8; color: var(--gray-100); display: flex; flex-direction: column; gap: 1.5rem; }
-        .reading-body p { margin-bottom: 0.5rem; text-align: justify; }
+        .reading-body { font-size: 1.1rem; line-height: 1.8; color: var(--gray-100); display: flex; flex-direction: column; gap: 0.75rem; transition: font-size 0.2s ease; }
+
+        /* Interactive Paragraph Steps */
+        .paragraph-step {
+            display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.85rem; 
+            border-radius: 12px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid transparent; cursor: pointer; position: relative;
+        }
+        .paragraph-step:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+        .paragraph-step.read {
+            background: rgba(20, 184, 166, 0.015);
+            border-color: rgba(20, 184, 166, 0.06);
+        }
+        .paragraph-step.read .step-checkbox {
+            border-color: #14b8a6 !important;
+            background: #14b8a6 !important;
+            color: #0f0d2e !important;
+        }
+        .paragraph-step.read .paragraph-content p {
+            color: var(--gray-400);
+        }
 
         /* Right Panel: Interactive AI Tutor */
         .chat-panel {
@@ -67,13 +89,13 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .chat-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: var(--amber); display: flex; align-items: center; gap: 0.5rem; }
-        .chat-header h3::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulse 1.5s infinite; }
+        .chat-header h3::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 1.5s infinite; }
 
         .chat-messages { flex: 1; overflow-y: auto; padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1.5rem; scroll-behavior: smooth; }
         .chat-messages::-webkit-scrollbar { width: 4px; }
         .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
 
-        .message { display: flex; flex-direction: column; gap: 0.4rem; max-width: 85%; }
+        .message { display: flex; flex-direction: column; gap: 0.4rem; max-width: 85%; animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .message.own { align-self: flex-end; }
         .message.tutor { align-self: flex-start; }
 
@@ -108,6 +130,14 @@
         .suggestion-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--gray-400); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-weight: 500; }
         .suggestion-btn:hover { background: rgba(255,255,255,0.07); border-color: var(--amber); color: #fff; }
 
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: .6rem 1.3rem; border-radius: 10px; font-size: .875rem; font-weight: 600; cursor: pointer; border: none; transition: all .2s; text-decoration: none; font-family: inherit; }
+        .btn-outline { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #fff; }
+        .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: var(--blue-light); }
+        .btn-primary { background: linear-gradient(135deg, var(--amber), #e67e22); color: #fff; box-shadow: 0 4px 15px rgba(245,158,11,0.25); }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,158,11,0.35); }
+        .btn-ghost { background: rgba(255,255,255,0.06); color: var(--gray-300); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
         @keyframes pulse {
             0% { transform: scale(0.9); opacity: 0.5; }
             50% { transform: scale(1.1); opacity: 1; }
@@ -118,6 +148,73 @@
             0%, 100% { transform: translateY(0); opacity: 0.4; }
             50% { transform: translateY(-5px); opacity: 1; }
         }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ── Audio Feature Styles ────────────────────────────── */
+        .btn-mic {
+            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-400); width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1rem; flex-shrink: 0; transition: all 0.25s ease;
+        }
+        .btn-mic:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-light); }
+        .btn-mic.recording { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); color: #ef4444; animation: mic-pulse 1.2s infinite ease-in-out; }
+        .btn-mic.unsupported { display: none; }
+
+        @keyframes mic-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50%       { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+        }
+
+        /* Auto-Read Toggle */
+        .btn-auto-read {
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--gray-400); padding: 0.35rem 0.75rem; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-auto-read:hover { background: rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.3); color: #a78bfa; }
+        .btn-auto-read.active { background: rgba(167, 139, 250, 0.15); border-color: rgba(167, 139, 250, 0.5); color: #c4b5fd; }
+
+        /* Read-Aloud Button */
+        .btn-read-aloud {
+            background: transparent; border: none; color: rgba(156, 163, 175, 0.5);
+            font-size: 0.72rem; cursor: pointer; padding: 2px 6px; border-radius: 6px;
+            display: flex; align-items: center; gap: 4px; transition: all 0.2s;
+            align-self: flex-start; margin-top: 2px;
+        }
+        .btn-read-aloud:hover { color: #a78bfa; background: rgba(167, 139, 250, 0.1); }
+        .btn-read-aloud.speaking { color: #a78bfa; }
+        .btn-read-aloud .wave { display: inline-flex; gap: 2px; align-items: flex-end; height: 11px; }
+        .btn-read-aloud .wave span {
+            display: inline-block; width: 2px; background: #a78bfa;
+            border-radius: 2px; animation: wave-bar 0.8s infinite ease-in-out;
+        }
+        .btn-read-aloud .wave span:nth-child(1) { height: 4px;  animation-delay: 0s; }
+        .btn-read-aloud .wave span:nth-child(2) { height: 9px;  animation-delay: 0.15s; }
+        .btn-read-aloud .wave span:nth-child(3) { height: 6px;  animation-delay: 0.3s; }
+        .btn-read-aloud .wave span:nth-child(4) { height: 9px;  animation-delay: 0.45s; }
+        .btn-read-aloud .wave span:nth-child(5) { height: 4px;  animation-delay: 0.6s; }
+        @keyframes wave-bar {
+            0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+            50%       { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Mic banner */
+        #mic-status-banner {
+            padding: 0.45rem 1.8rem; background: rgba(239, 68, 68, 0.08);
+            border-top: 1px solid rgba(239, 68, 68, 0.18); font-size: 0.78rem;
+            color: #fca5a5; display: flex; align-items: center; gap: 0.5rem;
+        }
+        #mic-status-banner .pulse-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; animation: mic-pulse 1s infinite; flex-shrink: 0; }
 
         @media (max-width: 900px) {
             .split-container { flex-direction: column; }
@@ -148,6 +245,26 @@
     <div class="split-container">
         <!-- Left Panel: Content -->
         <article class="reading-panel">
+            <!-- Sticky Reading progress & font controllers -->
+            <div style="position: sticky; top: -3.1rem; background: rgba(15,13,46,0.95); backdrop-filter: blur(12px); padding: 1rem 0; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; width: 100%;">
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.75rem;">
+                        <span style="color: var(--gray-400); font-weight: 600; letter-spacing: 0.05em;">PROGRESS / MAENDELEO:</span>
+                        <span id="reading-percent" style="color: var(--amber); font-weight: 700;">0% Completed</span>
+                    </div>
+                    <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
+                        <div id="reading-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--amber), #14b8a6); border-radius: 4px; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+                
+                <!-- Font scaler controls -->
+                <div style="display: flex; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.15rem 0.45rem; border-radius: 8px; flex-shrink: 0;">
+                    <button type="button" id="font-dec" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Smaller text">A-</button>
+                    <button type="button" id="font-reset" style="background: transparent; border: none; color: var(--amber); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Reset text size">A</button>
+                    <button type="button" id="font-inc" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Larger text">A+</button>
+                </div>
+            </div>
+
             <div class="reading-header">
                 <h2>{{ $curriculum->title }}</h2>
                 <div class="reading-tags">
@@ -166,12 +283,30 @@
                 </div>
             @endif
 
+            <!-- Reading Body split into interactive steps -->
             <div class="reading-body">
+                @php $paragraphIndex = 0; @endphp
                 @foreach(preg_split('/\n+/', $curriculum->content) as $paragraph)
                     @if(trim($paragraph))
-                        <p>{{ trim($paragraph) }}</p>
+                        @php $paragraphIndex++; @endphp
+                        <div class="paragraph-step" data-step="{{ $paragraphIndex }}">
+                            <div class="step-checkbox-wrapper" style="margin-top: 0.18rem; flex-shrink: 0;">
+                                <div class="step-checkbox" style="width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.6rem; color: transparent; transition: all 0.2s ease; background: rgba(255,255,255,0.01); font-weight: 900;">✓</div>
+                            </div>
+                            <div class="paragraph-content" style="flex: 1;">
+                                <p style="margin: 0; text-align: justify; transition: color 0.25s; font-size: inherit; line-height: inherit;">{{ trim($paragraph) }}</p>
+                            </div>
+                        </div>
                     @endif
                 @endforeach
+            </div>
+
+            <!-- Complete Topic Action Button -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
+                <button type="button" id="complete-topic-btn" class="btn btn-outline" style="padding: 0.85rem 2rem; font-size: 0.95rem; border-color: #14b8a6; color: #fff; background: rgba(20, 184, 166, 0.05); gap: 0.75rem; border-radius: 12px; transition: all 0.3s ease;">
+                    <span id="complete-btn-icon">🔘</span>
+                    <span id="complete-btn-text">Mark Topic as Completed</span>
+                </button>
             </div>
         </article>
 
@@ -179,7 +314,10 @@
         <section class="chat-panel">
             <div class="chat-header">
                 <h3>AI Study Assistant</h3>
-                <span style="font-size: 0.75rem; color: var(--gray-400);">Guided Tutoring</span>
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <button id="auto-read-toggle" class="btn-auto-read" title="Auto-read AI responses aloud">🔊 Auto</button>
+                    <span style="font-size: 0.75rem; color: var(--gray-400);">Guided Tutoring</span>
+                </div>
             </div>
 
             <div class="chat-messages" id="chat-messages">
@@ -200,6 +338,12 @@
                 <span></span><span></span><span></span>
             </div>
 
+            {{-- Mic recording status banner --}}
+            <div id="mic-status-banner" style="display:none;">
+                <span class="pulse-dot"></span>
+                <span id="mic-status-text">Listening... Speak your question</span>
+            </div>
+
             <div class="chat-input-area">
                 <div class="chat-suggestions">
                     @if($curriculum->language == 'sw')
@@ -214,7 +358,8 @@
                 </div>
                 <form id="tutor-chat-form" class="chat-input-wrapper">
                     @csrf
-                    <textarea id="chat-input" placeholder="Type a message or click a suggestion..." rows="1" autocomplete="off"></textarea>
+                    <button type="button" id="mic-btn" class="btn-mic" title="Speak your question">🎤</button>
+                    <textarea id="chat-input" placeholder="Type or tap 🎤 to speak..." autocomplete="off"></textarea>
                     <button type="submit" class="send-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polyline points="22 2 15 22 11 13 2 9 22 2"></polyline></svg>
                     </button>
@@ -223,12 +368,239 @@
         </section>
     </div>
 
+    <!-- Celebration Modal overlay -->
+    <div id="completion-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,13,46,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="background: var(--indigo-dark); border: 1px solid var(--border); max-width: 460px; width: 90%; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;" id="completion-modal-content">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎉</div>
+            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem;">Hongera! Congratulations!</h3>
+            <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.55; margin-bottom: 2rem;">
+                @if($curriculum->language == 'sw')
+                    Umekamilisha kusoma mada hii ya **"{{ $curriculum->title }}"**. Je, uko tayari kujipima uelewa wako na Mwalimu wetu wa AI?
+                @else
+                    You have completed reading the topic **"{{ $curriculum->title }}"**. Ready to test your understanding with our AI Tutor?
+                @endif
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <button id="modal-quiz-btn" class="btn btn-primary" style="justify-content: center; font-size: 0.95rem; padding: 0.8rem;">
+                    📝 Quiz Me Now / Nipime Maswali
+                </button>
+                <button id="modal-close-btn" class="btn btn-ghost" style="justify-content: center; font-size: 0.9rem; padding: 0.7rem; border-color: transparent;">
+                    Tutaendelea Baadaye / Maybe Later
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const chatMessages = document.getElementById('chat-messages');
             const tutorChatForm = document.getElementById('tutor-chat-form');
             const chatInput = document.getElementById('chat-input');
             const typingIndicator = document.getElementById('typing-indicator');
+
+            // ══════════════════════════════════════════════════════════
+            //  TEXT SCALING & STEP PROGRESS
+            // ══════════════════════════════════════════════════════════
+            
+            // Font Scaling
+            const fontDec = document.getElementById('font-dec');
+            const fontInc = document.getElementById('font-inc');
+            const fontReset = document.getElementById('font-reset');
+            const readingBody = document.querySelector('.reading-body');
+            let currentFontSize = 1.1; // in rem
+
+            if (fontDec && fontInc && fontReset && readingBody) {
+                fontDec.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (currentFontSize > 0.85) {
+                        currentFontSize -= 0.1;
+                        readingBody.style.fontSize = `${currentFontSize}rem`;
+                    }
+                });
+                fontInc.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (currentFontSize < 1.6) {
+                        currentFontSize += 0.1;
+                        readingBody.style.fontSize = `${currentFontSize}rem`;
+                    }
+                });
+                fontReset.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentFontSize = 1.1;
+                    readingBody.style.fontSize = `${currentFontSize}rem`;
+                });
+            }
+
+            // Paragraph Checking & Step Progress
+            const steps = document.querySelectorAll('.paragraph-step');
+            const readingProgressBar = document.getElementById('reading-progress-bar');
+            const readingPercentText = document.getElementById('reading-percent');
+            const completeTopicBtn = document.getElementById('complete-topic-btn');
+            const completeBtnText = document.getElementById('complete-btn-text');
+            const completeBtnIcon = document.getElementById('complete-btn-icon');
+
+            const curriculumId = '{{ $curriculum->id }}';
+            const progressStorageKey = `hurulearn_steps_completed_${curriculumId}`;
+            const completeStorageKey = `hurulearn_completed_curriculum_${curriculumId}`;
+
+            // Load saved progress from localStorage
+            let completedSteps = [];
+            try {
+                const saved = localStorage.getItem(progressStorageKey);
+                if (saved) completedSteps = JSON.parse(saved);
+            } catch(e) { console.error('Failed to load steps from localStorage', e); }
+
+            // Initialize checkboxes according to stored values
+            steps.forEach(step => {
+                const stepNum = parseInt(step.getAttribute('data-step'));
+                if (completedSteps.includes(stepNum)) {
+                    step.classList.add('read');
+                }
+
+                // Attach click handler to toggle read state
+                step.addEventListener('click', () => {
+                    const activeStepNum = parseInt(step.getAttribute('data-step'));
+                    if (step.classList.contains('read')) {
+                        step.classList.remove('read');
+                        completedSteps = completedSteps.filter(id => id !== activeStepNum);
+                    } else {
+                        step.classList.add('read');
+                        completedSteps.push(activeStepNum);
+                    }
+                    localStorage.setItem(progressStorageKey, JSON.stringify(completedSteps));
+                    updateProgressUI();
+                });
+            });
+
+            // Handle persistence of overall completion
+            const isTopicCompleted = localStorage.getItem(completeStorageKey) === 'true';
+            if (isTopicCompleted) {
+                markTopicAsCompletedUI(false); // don't fire confetti on initial page load
+            }
+
+            function updateProgressUI() {
+                if (steps.length === 0) return;
+                const ratio = completedSteps.length / steps.length;
+                const pct = Math.round(ratio * 100);
+                
+                if (readingProgressBar) readingProgressBar.style.width = `${pct}%`;
+                if (readingPercentText) readingPercentText.textContent = `${pct}% Completed`;
+
+                // Highlight complete button when finished
+                if (pct === 100) {
+                    completeTopicBtn.style.borderColor = '#10b981';
+                    completeTopicBtn.style.background = 'rgba(16, 185, 129, 0.15)';
+                    completeTopicBtn.style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.2)';
+                } else if (localStorage.getItem(completeStorageKey) !== 'true') {
+                    completeTopicBtn.style.borderColor = '#14b8a6';
+                    completeTopicBtn.style.background = 'rgba(20, 184, 166, 0.05)';
+                    completeTopicBtn.style.boxShadow = 'none';
+                }
+            }
+
+            function markTopicAsCompletedUI(shouldTriggerConfetti = true) {
+                localStorage.setItem(completeStorageKey, 'true');
+                if (completeBtnText) completeBtnText.textContent = 'Topic Completed! (Read Again)';
+                if (completeBtnIcon) completeBtnIcon.textContent = '✅';
+                if (completeTopicBtn) {
+                    completeTopicBtn.style.borderColor = '#10b981';
+                    completeTopicBtn.style.background = 'rgba(16, 185, 129, 0.1)';
+                    completeTopicBtn.style.color = '#a7f3d0';
+                }
+
+                if (shouldTriggerConfetti) {
+                    triggerConfetti();
+                    setTimeout(showCompletionModal, 600);
+                }
+            }
+
+            // Click complete button manually
+            if (completeTopicBtn) {
+                completeTopicBtn.addEventListener('click', () => {
+                    // Mark all paragraphs as read on completion
+                    completedSteps = Array.from({length: steps.length}, (_, i) => i + 1);
+                    localStorage.setItem(progressStorageKey, JSON.stringify(completedSteps));
+                    steps.forEach(step => step.classList.add('read'));
+                    updateProgressUI();
+                    markTopicAsCompletedUI(true);
+                });
+            }
+
+            // Initial UI state setup
+            updateProgressUI();
+
+            // Confetti Generation helper
+            function triggerConfetti() {
+                const colors = ['#f59e0b', '#3b82f6', '#14b8a6', '#ef4444', '#a78bfa'];
+                for (let i = 0; i < 75; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-20px';
+                    confetti.style.width = Math.random() * 8 + 6 + 'px';
+                    confetti.style.height = Math.random() * 14 + 10 + 'px';
+                    confetti.style.position = 'fixed';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.borderRadius = '2px';
+                    confetti.style.opacity = Math.random() * 0.7 + 0.3;
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    const duration = Math.random() * 2 + 1.5;
+                    const fallDelay = Math.random() * 0.25;
+                    confetti.style.animation = `confetti-fall ${duration}s linear ${fallDelay}s forwards`;
+                    
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), (duration + fallDelay) * 1000);
+                }
+            }
+
+            // ══════════════════════════════════════════════════════════
+            //  CELEBRATION MODAL ACTIONS
+            // ══════════════════════════════════════════════════════════
+            const completionModal = document.getElementById('completion-modal');
+            const completionModalContent = document.getElementById('completion-modal-content');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            const modalQuizBtn = document.getElementById('modal-quiz-btn');
+
+            function showCompletionModal() {
+                if (!completionModal) return;
+                completionModal.style.display = 'flex';
+                setTimeout(() => {
+                    completionModal.style.opacity = '1';
+                    if (completionModalContent) completionModalContent.style.transform = 'scale(1)';
+                }, 50);
+            }
+
+            function closeCompletionModal() {
+                if (!completionModal) return;
+                completionModal.style.opacity = '0';
+                if (completionModalContent) completionModalContent.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    completionModal.style.display = 'none';
+                }, 300);
+            }
+
+            if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeCompletionModal);
+            if (completionModal) {
+                completionModal.addEventListener('click', (e) => {
+                    if (e.target === completionModal) closeCompletionModal();
+                });
+            }
+
+            if (modalQuizBtn) {
+                modalQuizBtn.addEventListener('click', () => {
+                    closeCompletionModal();
+                    // Choose correct quiz trigger query based on language
+                    const quizQuery = '{{ $curriculum->language }}' === 'sw' 
+                        ? 'Niazishe swali la kwanza la zoezi' 
+                        : 'Start the first quiz question';
+                    submitQuery(quizQuery);
+                });
+            }
+
+            // ══════════════════════════════════════════════════════════
+            //  CHAT ACTIONS & SUBMIT
+            // ══════════════════════════════════════════════════════════
 
             // Auto-expand textarea
             chatInput.addEventListener('input', function() {
@@ -298,7 +670,7 @@
             function addMessage(text, sender) {
                 const div = document.createElement('div');
                 div.className = `message ${sender}`;
-                
+
                 const label = document.createElement('span');
                 label.className = 'avatar-label';
                 label.textContent = sender === 'own' ? '✦ You' : '✦ AI Tutor';
@@ -310,12 +682,191 @@
 
                 div.appendChild(label);
                 div.appendChild(bubble);
+
+                // Add Read-Aloud button for tutor messages only
+                if (sender === 'tutor') {
+                    const readBtn = document.createElement('button');
+                    readBtn.className = 'btn-read-aloud';
+                    readBtn.title = 'Read aloud';
+                    readBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read`;
+                    readBtn.addEventListener('click', () => {
+                        const plain = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                        if (readBtn.classList.contains('speaking')) {
+                            audioEngine.stop();
+                        } else {
+                            audioEngine.speak(plain, readBtn);
+                        }
+                    });
+                    div.appendChild(readBtn);
+
+                    // Auto-read if enabled
+                    if (autoReadEnabled) {
+                        setTimeout(() => {
+                            const plain = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                            audioEngine.speak(plain, readBtn);
+                        }, 300);
+                    }
+                }
+
                 chatMessages.appendChild(div);
             }
 
             function scrollToBottom() {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+
+            // ══════════════════════════════════════════════════════════
+            //  AUDIO ENGINE  —  Speech Recognition (STT) + Synthesis (TTS)
+            // ══════════════════════════════════════════════════════════
+
+            // Detect curriculum language for default STT/TTS language
+            const curriculumLang = '{{ $curriculum->language }}' === 'sw' ? 'sw-TZ' : 'en-US';
+
+            let autoReadEnabled = false;
+
+            // ── Text-to-Speech (TTS) ─────────────────────────────────
+            const audioEngine = {
+                utterance: null,
+                activeBtn: null,
+
+                speak(text, btn) {
+                    this.stop();
+                    const utter = new SpeechSynthesisUtterance(text);
+
+                    // Language: use curriculum language as primary hint,
+                    // then also scan text for Swahili marker words
+                    const swWords = /\b(na|ya|wa|kwa|ni|la|za|cha|mwa|katika|kuhusu|jinsi|kwamba|lakini|pia|au|hii|sasa|bado|tu|sana|zaidi|vizuri|ndiyo|hapana|samahani|habari|asante|tafadhali)\b/i;
+                    utter.lang = (curriculumLang === 'sw-TZ' || swWords.test(text)) ? 'sw-TZ' : 'en-US';
+                    utter.rate = 0.95;
+                    utter.pitch = 1;
+
+                    const voices = speechSynthesis.getVoices();
+                    const preferred = voices.find(v => v.lang.startsWith(utter.lang.slice(0, 2)))
+                                   || voices.find(v => v.lang.startsWith('en'));
+                    if (preferred) utter.voice = preferred;
+
+                    this.utterance = utter;
+                    this.activeBtn = btn;
+
+                    if (btn) {
+                        btn.classList.add('speaking');
+                        btn.innerHTML = `<span class="wave"><span></span><span></span><span></span><span></span><span></span></span> Stop`;
+                    }
+
+                    utter.onend  = () => this._resetBtn(btn);
+                    utter.onerror = () => this._resetBtn(btn);
+                    speechSynthesis.speak(utter);
+                },
+
+                stop() {
+                    speechSynthesis.cancel();
+                    if (this.activeBtn) this._resetBtn(this.activeBtn);
+                    this.activeBtn = null;
+                    this.utterance = null;
+                },
+
+                _resetBtn(btn) {
+                    if (!btn) return;
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg> Read`;
+                }
+            };
+
+            // Preload voices (Chrome loads them async)
+            speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+            speechSynthesis.getVoices();
+
+            // ── Auto-Read Toggle ──────────────────────────────────────
+            const autoReadToggle = document.getElementById('auto-read-toggle');
+            if (autoReadToggle) {
+                autoReadToggle.addEventListener('click', () => {
+                    autoReadEnabled = !autoReadEnabled;
+                    autoReadToggle.classList.toggle('active', autoReadEnabled);
+                    autoReadToggle.textContent = autoReadEnabled ? '🔊 Auto: ON' : '🔊 Auto';
+                    autoReadToggle.title = autoReadEnabled ? 'Click to turn off auto-read' : 'Auto-read AI responses aloud';
+                    if (!autoReadEnabled) audioEngine.stop();
+                });
+            }
+
+            // ── Speech Recognition (STT) ──────────────────────────────
+            const micBtn = document.getElementById('mic-btn');
+            const micStatusBanner = document.getElementById('mic-status-banner');
+            const micStatusText = document.getElementById('mic-status-text');
+
+            const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+            if (!SpeechRecognitionAPI) {
+                if (micBtn) micBtn.classList.add('unsupported');
+            } else {
+                let recognition = null;
+                let isRecording = false;
+
+                function buildRecognition() {
+                    const rec = new SpeechRecognitionAPI();
+                    rec.continuous = false;
+                    rec.interimResults = true;
+                    rec.lang = curriculumLang; // Use curriculum's language for STT
+
+                    rec.onstart = () => {
+                        isRecording = true;
+                        micBtn.classList.add('recording');
+                        micBtn.title = 'Stop recording';
+                        micBtn.textContent = '⏹';
+                        micStatusBanner.style.display = 'flex';
+                        micStatusText.textContent = 'Listening... Speak your question';
+                        audioEngine.stop();
+                    };
+
+                    rec.onresult = (event) => {
+                        let interim = '', final = '';
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            const t = event.results[i][0].transcript;
+                            event.results[i].isFinal ? (final += t) : (interim += t);
+                        }
+                        chatInput.value = final || interim;
+                        // Auto-resize textarea
+                        chatInput.style.height = 'auto';
+                        chatInput.style.height = Math.min(chatInput.scrollHeight, 80) + 'px';
+                        if (interim) micStatusText.textContent = `Hearing: "${interim}"`;
+                    };
+
+                    rec.onspeechend = () => rec.stop();
+
+                    rec.onend = () => {
+                        isRecording = false;
+                        micBtn.classList.remove('recording');
+                        micBtn.title = 'Speak your question';
+                        micBtn.textContent = '🎤';
+                        micStatusBanner.style.display = 'none';
+                        if (chatInput.value.trim()) chatInput.focus();
+                    };
+
+                    rec.onerror = (event) => {
+                        isRecording = false;
+                        micBtn.classList.remove('recording');
+                        micBtn.title = 'Speak your question';
+                        micBtn.textContent = '🎤';
+                        let msg = 'Could not hear you. Please try again.';
+                        if (event.error === 'not-allowed')  msg = 'Microphone access denied. Please allow it in browser settings.';
+                        else if (event.error === 'network') msg = 'Network error during voice recognition.';
+                        else if (event.error === 'no-speech') msg = 'No speech detected. Tap 🎤 to try again.';
+                        micStatusText.textContent = msg;
+                        setTimeout(() => { micStatusBanner.style.display = 'none'; }, 3500);
+                    };
+
+                    return rec;
+                }
+
+                micBtn.addEventListener('click', () => {
+                    if (isRecording) {
+                        if (recognition) recognition.stop();
+                    } else {
+                        recognition = buildRecognition();
+                        try { recognition.start(); } catch (e) { console.error('STT start error:', e); }
+                    }
+                });
+            }
+
         });
     </script>
 </body>
