@@ -133,10 +133,15 @@ class ProcessIncomingSms implements ShouldQueue
         }
 
         // ---------------------------------------------------------------------------
-        // Re-apply the shared short-code keyword before sending.
-        // Africa's Talking requires the keyword prefix on outbound messages that
-        // originate from a shared short code so the reply is routed correctly.
+        // Sanitise the AI response before sending.
+        // The AI sometimes learns from conversation history and echoes the shortcode
+        // keyword "HURU" at the start or appends "HuruLearn Secondary Education"
+        // at the end. Strip both unconditionally so the SMS is always clean.
         // ---------------------------------------------------------------------------
+        $aiResponseText = preg_replace('/^HURU[\s:]+/iu', '', $aiResponseText);
+        $aiResponseText = preg_replace('/[\s\n]*HuruLearn\s+Secondary\s+Education\.?\s*$/iu', '', $aiResponseText);
+        $aiResponseText = trim($aiResponseText);
+
         $outboundText = $aiResponseText;
 
         // 5. Send SMS
