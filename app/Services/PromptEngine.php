@@ -126,6 +126,7 @@ class PromptEngine
                    "- LAZIMA utambue lugha aliyotumia mwanafunzi na ujibu kwa lugha HIYO HIYO aliyouliza (Kiswahili kama ameuliza kwa Kiswahili, Kiingereza kama ameuliza kwa Kiingereza).\n" .
                    "- Jibu kwa ufupi na ukamilifu (Max maneno {$maxWords}).\n" .
                    "- USIWEKE salamu wala maongezi yasiyo ya kimasomo.\n" .
+                   "- KAMWE usianze jibu lako kwa neno \"HURU\" au maneno yoyote ya msimbo wa simu fupi.\n" .
                    "- LAZIMA uandike jibu lako kwa maandishi ya kawaida (plain text) pekee. USITUMIE alama za asterisks au nyota (*) hata kidogo (kama vile **bold** au *italics* au * orodha za bullet). Hakikisha hakuna herufi yoyote ya nyota (*) katika jibu lako lote.\n";
         }
 
@@ -133,6 +134,7 @@ class PromptEngine
                "- YOU MUST detect the exact language of the student's question and respond entirely in that SAME language (English or Swahili).\n" .
                "- Respond briefly and completely (Max {$maxWords} words).\n" .
                "- DO NOT include greetings or extra conversation.\n" .
+               "- NEVER begin your response with the word \"HURU\" or any shortcode keyword.\n" .
                "- YOU MUST write your response in 100% clean plain text. DO NOT use any asterisks (*) or markdown formatting (like **bold**, *italics*, or * lists) under any circumstances. Ensure there are absolutely no asterisk characters (*) in your entire response.";
     }
 }
