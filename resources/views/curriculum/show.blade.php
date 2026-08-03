@@ -216,6 +216,110 @@
         }
         #mic-status-banner .pulse-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; animation: mic-pulse 1s infinite; flex-shrink: 0; }
 
+        /* ── Listen to Notes Player ────────────────────────────── */
+
+        /* Floating sticky player bar at bottom of reading panel */
+        #listen-player {
+            position: sticky; bottom: 0;
+            background: rgba(10, 9, 35, 0.96);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(167, 139, 250, 0.25);
+            padding: 0.9rem 1.2rem;
+            display: none;         /* shown when listening starts */
+            flex-direction: column;
+            gap: 0.65rem;
+            z-index: 20;
+            border-radius: 0 0 0 0;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Player track bar */
+        .player-track {
+            display: flex; align-items: center; gap: 0.65rem;
+        }
+        .player-track-bar {
+            flex: 1; height: 4px; background: rgba(255,255,255,0.08);
+            border-radius: 4px; overflow: hidden; cursor: pointer;
+        }
+        .player-track-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a78bfa, #60a5fa);
+            border-radius: 4px;
+            transition: width 0.4s linear;
+            width: 0%;
+        }
+        .player-track-label {
+            font-size: 0.7rem; color: var(--gray-400); white-space: nowrap; min-width: 60px; text-align: right;
+        }
+
+        /* Player controls */
+        .player-controls {
+            display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+        }
+        .btn-player {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            color: #e5e7eb; border-radius: 10px; padding: 0.4rem 0.8rem;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 0.4rem;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-player:hover { background: rgba(167,139,250,0.15); border-color: rgba(167,139,250,0.4); color: #c4b5fd; }
+        .btn-player.active { background: rgba(167,139,250,0.2); border-color: #a78bfa; color: #c4b5fd; }
+        .btn-player.btn-play-pause {
+            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            border: none; color: #fff; padding: 0.45rem 1rem;
+            box-shadow: 0 3px 10px rgba(124,58,237,0.3);
+        }
+        .btn-player.btn-play-pause:hover { box-shadow: 0 4px 14px rgba(124,58,237,0.45); transform: scale(1.03); }
+
+        .player-info {
+            flex: 1; font-size: 0.75rem; color: var(--gray-400);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .player-info strong { color: #a78bfa; font-weight: 700; }
+
+        /* Speed badge */
+        .speed-badge {
+            font-size: 0.7rem; font-weight: 700; background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1); color: var(--gray-400);
+            padding: 0.3rem 0.55rem; border-radius: 7px; cursor: pointer;
+            transition: all 0.2s; min-width: 42px; text-align: center;
+        }
+        .speed-badge:hover { background: rgba(167,139,250,0.15); border-color: rgba(167,139,250,0.4); color: #a78bfa; }
+
+        /* Paragraph currently being read – highlight */
+        .paragraph-step.listening-active {
+            background: rgba(124, 58, 237, 0.07) !important;
+            border-color: rgba(124, 58, 237, 0.25) !important;
+            box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.15);
+        }
+        .paragraph-step.listening-active .paragraph-content p {
+            color: #e9d5ff !important;
+        }
+
+        /* Listen button in toolbar */
+        .btn-listen {
+            background: rgba(124, 58, 237, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #c4b5fd;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .btn-listen:hover { background: rgba(124,58,237,0.22); border-color: #a78bfa; color: #e9d5ff; }
+        .btn-listen.listening { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+
         @media (max-width: 900px) {
             .split-container { flex-direction: column; }
             .reading-panel { flex: 1; border-right: none; border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; }
@@ -246,7 +350,7 @@
         <!-- Left Panel: Content -->
         <article class="reading-panel">
             <!-- Sticky Reading progress & font controllers -->
-            <div style="position: sticky; top: -3.1rem; background: rgba(15,13,46,0.95); backdrop-filter: blur(12px); padding: 1rem 0; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; width: 100%;">
+            <div style="position: sticky; top: -3.1rem; background: rgba(15,13,46,0.95); backdrop-filter: blur(12px); padding: 1rem 0; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
                 <div style="flex: 1;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.75rem;">
                         <span style="color: var(--gray-400); font-weight: 600; letter-spacing: 0.05em;">PROGRESS / MAENDELEO:</span>
@@ -257,11 +361,18 @@
                     </div>
                 </div>
                 
-                <!-- Font scaler controls -->
-                <div style="display: flex; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.15rem 0.45rem; border-radius: 8px; flex-shrink: 0;">
-                    <button type="button" id="font-dec" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Smaller text">A-</button>
-                    <button type="button" id="font-reset" style="background: transparent; border: none; color: var(--amber); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Reset text size">A</button>
-                    <button type="button" id="font-inc" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Larger text">A+</button>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
+                    <!-- 🎧 Listen to Notes button -->
+                    <button type="button" id="listen-btn" class="btn-listen" title="Listen to the notes being read aloud">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-9 9v7c0 1.1.9 2 2 2h1v-8H4v-1a8 8 0 0 1 16 0v1h-2v8h1c1.1 0 2-.9 2-2v-7a9 9 0 0 0-9-9z"/></svg>
+                        Listen
+                    </button>
+                    <!-- Font scaler controls -->
+                    <div style="display: flex; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.15rem 0.45rem; border-radius: 8px;">
+                        <button type="button" id="font-dec" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Smaller text">A-</button>
+                        <button type="button" id="font-reset" style="background: transparent; border: none; color: var(--amber); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Reset text size">A</button>
+                        <button type="button" id="font-inc" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Larger text">A+</button>
+                    </div>
                 </div>
             </div>
 
@@ -307,6 +418,38 @@
                     <span id="complete-btn-icon">🔘</span>
                     <span id="complete-btn-text">Mark Topic as Completed</span>
                 </button>
+            </div>
+
+            {{-- ── Listen-to-Notes floating player bar ── --}}
+            <div id="listen-player">
+                {{-- Track progress bar --}}
+                <div class="player-track">
+                    <span class="player-track-label" id="player-para-counter">0 / 0</span>
+                    <div class="player-track-bar" id="player-track-bar" title="Click to seek">
+                        <div class="player-track-fill" id="player-track-fill"></div>
+                    </div>
+                    <span class="speed-badge" id="player-speed-badge" title="Change reading speed">1×</span>
+                </div>
+                {{-- Controls --}}
+                <div class="player-controls">
+                    <button type="button" id="player-prev" class="btn-player" title="Previous paragraph">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                    <button type="button" id="player-play-pause" class="btn-player btn-play-pause" title="Play / Pause">
+                        <svg id="player-play-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <span id="player-play-label">Play Notes</span>
+                    </button>
+                    <button type="button" id="player-next" class="btn-player" title="Next paragraph">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5-3.9v7.8L8.5 12zM16 6h2v12h-2z"/></svg>
+                    </button>
+                    <button type="button" id="player-stop" class="btn-player" title="Stop and close player">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>
+                        Stop
+                    </button>
+                    <span class="player-info" id="player-info-text">
+                        {{ $curriculum->language == 'sw' ? 'Inasoma madhehebu...' : 'Reading notes...' }}
+                    </span>
+                </div>
             </div>
         </article>
 
@@ -722,6 +865,148 @@
             // Detect curriculum language for default STT/TTS language
             const curriculumLang = '{{ $curriculum->language }}' === 'sw' ? 'sw-TZ' : 'en-US';
 
+            // ── Voice Intelligence Engine ────────────────────────────────
+            // Score-based language detection + natural voice selection
+            // Optimised for Tanzanian students reading Swahili & English
+            const VoiceIntelligence = {
+                _voices: [],
+
+                init() {
+                    const load = () => { this._voices = speechSynthesis.getVoices(); };
+                    this._voices = speechSynthesis.getVoices();
+                    speechSynthesis.onvoiceschanged = load;
+                },
+
+                /**
+                 * Determines the correct TTS language from the text content.
+                 * Uses frequency scoring so a passage cannot be misidentified
+                 * just because one Swahili particle appears in English text, or vice versa.
+                 *
+                 * hintLang — 'sw-TZ' | 'en-US' | 'auto'
+                 *   sw-TZ : strong bias toward Swahili (used when curriculum is Swahili)
+                 *   en-US : bias toward English (English curriculum)
+                 *   auto  : Tanzania-first heuristic (used in open chat)
+                 */
+                detectLang(text, hintLang) {
+                    const words = text.toLowerCase()
+                        .replace(/[^a-z\s]/g, ' ')
+                        .split(/\s+/)
+                        .filter(w => w.length > 1);
+
+                    if (!words.length) return hintLang === 'auto' ? 'sw-TZ' : hintLang;
+
+                    const swSet = new Set([
+                        // Particles / prepositions
+                        'na','ya','wa','kwa','ni','la','za','cha','mwa','pa','au','tu',
+                        // Adverbs
+                        'sana','zaidi','kidogo','vizuri','haraka','hapa','pale','sasa',
+                        'bado','tena','hata','pia','kabisa','kweli','kwanza',
+                        // Demonstratives / pronouns
+                        'hii','hizi','huo','hizo','hao','yote','zote','wake','wao',
+                        'yake','yao','huyu','hawa','hiyo','hili','haya','hilo',
+                        // Copula / stative
+                        'iko','ipo','imo','yupo','wako','wapo','wamo','liko','lipo',
+                        // Common expressions
+                        'habari','asante','tafadhali','samahani','karibu','ndiyo',
+                        'hapana','sawa','nzuri','kwaheri','pole','hongera',
+                        // Education vocabulary
+                        'mwanafunzi','wanafunzi','mwalimu','walimu','shule','darasa',
+                        'kitabu','vitabu','somo','masomo','mtihani','swali','maswali',
+                        'jibu','majibu','elimu','lugha','kiswahili','hesabu','historia',
+                        'sayansi','kanuni','mada','sehemu','ubao','kalamu','faida',
+                        // Conjunctions / subordinators
+                        'kuhusu','jinsi','kwamba','lakini','ingawa','baada','kabla',
+                        'wakati','pamoja','badala','kama','bila','ikiwa','japo',
+                        // Subject pronouns
+                        'mimi','wewe','yeye','sisi','nyinyi',
+                        // Common infinitives
+                        'kusoma','kuandika','kuelewa','kujua','kuona','kusikia',
+                        'kufanya','kuwa','kwenda','kurudi','kufika','kupata',
+                        'kujifunza','kuuliza','kujibu','kucheza','kufungua',
+                    ]);
+
+                    const enSet = new Set([
+                        'the','a','an','is','are','was','were','be','been','being',
+                        'have','has','had','do','does','did','will','would','could',
+                        'should','may','might','can','shall','must','need',
+                        'this','that','these','those','it','its','they','their','there',
+                        'he','she','we','you','your','our','my','his','her',
+                        'and','but','or','nor','for','so','yet','however','therefore',
+                        'because','although','though','while','when','where','which',
+                        'who','what','how','why','if','then','than','as',
+                        'at','in','on','of','to','from','with','by','about','into',
+                        'through','during','before','after','above','below','between',
+                        'not','no','never','also','just','now','here','very','well',
+                        'only','all','both','each','every','some','any','few','more',
+                        'such','like','even','still','already','yet','again',
+                    ]);
+
+                    let swScore = 0, enScore = 0;
+                    for (const w of words) {
+                        if (swSet.has(w)) swScore++;
+                        if (enSet.has(w)) enScore++;
+                    }
+
+                    const total   = words.length;
+                    const swRatio = swScore / total;
+                    const enRatio = enScore / total;
+
+                    if (hintLang === 'sw-TZ') {
+                        // Strong Swahili bias — only override when English dominates clearly
+                        return (enRatio > swRatio * 2.2 && enRatio > 0.12) ? 'en-US' : 'sw-TZ';
+                    }
+                    if (hintLang === 'en-US') {
+                        // English bias — switch to Swahili only when unambiguous
+                        return (swRatio > enRatio * 1.5 && swRatio > 0.06) ? 'sw-TZ' : 'en-US';
+                    }
+                    // 'auto' (open chat) — Tanzania-first, default to Swahili unless clearly English
+                    return (enRatio > swRatio * 1.8 && enRatio > 0.10) ? 'en-US' : 'sw-TZ';
+                },
+
+                /**
+                 * Select the most natural available voice for the given language.
+                 * Priority: Google online > Neural/Natural > any matching locale > fallback
+                 * For Swahili with no sw voice: falls back to en-GB (clearest for African ears).
+                 */
+                pickVoice(lang) {
+                    const voices  = this._voices.length ? this._voices : speechSynthesis.getVoices();
+                    const code    = lang.slice(0, 2); // 'sw' or 'en'
+                    const natural = v => !v.localService
+                        || v.name.includes('Google')
+                        || v.name.includes('Neural')
+                        || v.name.includes('Natural')
+                        || v.name.includes('Online');
+
+                    if (code === 'sw') {
+                        return voices.find(v => v.name.includes('Google') && v.lang.startsWith('sw'))
+                            || voices.find(v => v.lang.startsWith('sw'))
+                            // No Swahili voice — use British English (most neutral for TZ listeners)
+                            || voices.find(v => v.name.includes('Google') && v.lang === 'en-GB')
+                            || voices.find(v => v.name.includes('Google') && v.lang.startsWith('en'))
+                            || voices.find(v => v.lang === 'en-GB')
+                            || voices.find(v => natural(v) && v.lang.startsWith('en'))
+                            || voices.find(v => v.lang.startsWith('en'))
+                            || null;
+                    }
+
+                    return voices.find(v => natural(v) && v.lang === lang)
+                        || voices.find(v => natural(v) && v.lang.startsWith(code))
+                        || voices.find(v => v.lang === lang)
+                        || voices.find(v => v.lang.startsWith(code))
+                        || null;
+                },
+
+                /**
+                 * Returns a natural speech rate for the given language.
+                 * Swahili is slightly slower to preserve syllable clarity.
+                 */
+                getRate(lang, speedMultiplier = 1) {
+                    const base = lang.startsWith('sw') ? 0.88 : 0.92;
+                    return base * speedMultiplier;
+                },
+            };
+            VoiceIntelligence.init();
+
             let autoReadEnabled = false;
 
             // ── Text-to-Speech (TTS) ─────────────────────────────────
@@ -733,17 +1018,14 @@
                     this.stop();
                     const utter = new SpeechSynthesisUtterance(text);
 
-                    // Language: use curriculum language as primary hint,
-                    // then also scan text for Swahili marker words
-                    const swWords = /\b(na|ya|wa|kwa|ni|la|za|cha|mwa|katika|kuhusu|jinsi|kwamba|lakini|pia|au|hii|sasa|bado|tu|sana|zaidi|vizuri|ndiyo|hapana|samahani|habari|asante|tafadhali)\b/i;
-                    utter.lang = (curriculumLang === 'sw-TZ' || swWords.test(text)) ? 'sw-TZ' : 'en-US';
-                    utter.rate = 0.95;
+                    // Smart language detection with curriculum hint
+                    utter.lang  = VoiceIntelligence.detectLang(text, curriculumLang);
+                    utter.rate  = VoiceIntelligence.getRate(utter.lang);
                     utter.pitch = 1;
 
-                    const voices = speechSynthesis.getVoices();
-                    const preferred = voices.find(v => v.lang.startsWith(utter.lang.slice(0, 2)))
-                                   || voices.find(v => v.lang.startsWith('en'));
-                    if (preferred) utter.voice = preferred;
+                    // Most natural available voice for the detected language
+                    const voice = VoiceIntelligence.pickVoice(utter.lang);
+                    if (voice) utter.voice = voice;
 
                     this.utterance = utter;
                     this.activeBtn = btn;
@@ -772,9 +1054,7 @@
                 }
             };
 
-            // Preload voices (Chrome loads them async)
-            speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
-            speechSynthesis.getVoices();
+            // Voice list managed by VoiceIntelligence.init() above
 
             // ── Auto-Read Toggle ──────────────────────────────────────
             const autoReadToggle = document.getElementById('auto-read-toggle');
@@ -866,6 +1146,274 @@
                     }
                 });
             }
+
+
+            // ══════════════════════════════════════════════════════════
+            //  LISTEN TO NOTES PLAYER
+            // ══════════════════════════════════════════════════════════
+
+            (function initListenPlayer() {
+
+                // Collect all paragraph texts from reading body
+                const paragraphSteps = Array.from(document.querySelectorAll('.paragraph-step'));
+                const paragraphTexts = paragraphSteps.map(el => {
+                    const p = el.querySelector('.paragraph-content p');
+                    return p ? p.textContent.trim() : '';
+                }).filter(t => t.length > 0);
+
+                if (paragraphTexts.length === 0) return; // no content
+
+                const listenBtn       = document.getElementById('listen-btn');
+                const listenPlayer    = document.getElementById('listen-player');
+                const playPauseBtn    = document.getElementById('player-play-pause');
+                const playLabel       = document.getElementById('player-play-label');
+                const playIcon        = document.getElementById('player-play-icon');
+                const prevBtn         = document.getElementById('player-prev');
+                const nextBtn         = document.getElementById('player-next');
+                const stopBtn         = document.getElementById('player-stop');
+                const trackFill       = document.getElementById('player-track-fill');
+                const trackBar        = document.getElementById('player-track-bar');
+                const paraCounter     = document.getElementById('player-para-counter');
+                const speedBadge      = document.getElementById('player-speed-badge');
+                const infoText        = document.getElementById('player-info-text');
+                const readingPanel    = document.querySelector('.reading-panel');
+
+                const speeds = [0.75, 1, 1.25, 1.5];
+                let speedIndex = 1;          // default 1×
+                let currentPara = 0;         // index of paragraph being read
+                let isPlaying   = false;
+                let isPaused    = false;
+                let playerOpen  = false;
+
+                // ── Helpers ──────────────────────────────────────────
+                function openPlayer() {
+                    playerOpen = true;
+                    listenPlayer.style.display = 'flex';
+                    listenBtn.classList.add('listening');
+                    listenBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h12v12H6z"/></svg> Stop`;
+                    updateTrack();
+                }
+
+                function closePlayer() {
+                    playerOpen = false;
+                    stopSpeech();
+                    isPlaying = false;
+                    isPaused  = false;
+                    currentPara = 0;
+                    listenPlayer.style.display = 'none';
+                    listenBtn.classList.remove('listening');
+                    listenBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-9 9v7c0 1.1.9 2 2 2h1v-8H4v-1a8 8 0 0 1 16 0v1h-2v8h1c1.1 0 2-.9 2-2v-7a9 9 0 0 0-9-9z"/></svg> Listen`;
+                    clearHighlight();
+                    updateTrack();
+                    setPlayIcon(false);
+                }
+
+                function stopSpeech() {
+                    speechSynthesis.cancel();
+                }
+
+                function clearHighlight() {
+                    paragraphSteps.forEach(s => s.classList.remove('listening-active'));
+                }
+
+                function highlightPara(idx) {
+                    clearHighlight();
+                    if (paragraphSteps[idx]) {
+                        paragraphSteps[idx].classList.add('listening-active');
+                        // Scroll the paragraph into view inside the reading panel
+                        paragraphSteps[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+
+                function updateTrack() {
+                    const total = paragraphTexts.length;
+                    const done  = Math.min(currentPara + 1, total);
+                    const pct   = total > 0 ? ((currentPara) / total) * 100 : 0;
+                    if (trackFill)   trackFill.style.width = `${pct}%`;
+                    if (paraCounter) paraCounter.textContent = `${isPlaying || isPaused ? done : 0} / ${total}`;
+                }
+
+                function setPlayIcon(playing) {
+                    if (playing) {
+                        // Pause icon
+                        playIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+                        playLabel.textContent = '{{ $curriculum->language == "sw" ? "Simama" : "Pause" }}';
+                    } else {
+                        // Play icon
+                        playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+                        playLabel.textContent = '{{ $curriculum->language == "sw" ? "Sikiliza Maelezo" : "Play Notes" }}';
+                    }
+                }
+
+                function speakParagraph(idx) {
+                    if (idx >= paragraphTexts.length) {
+                        // Finished all paragraphs
+                        isPlaying = false;
+                        isPaused  = false;
+                        currentPara = 0;
+                        clearHighlight();
+                        updateTrack();
+                        setPlayIcon(false);
+                        if (infoText) infoText.innerHTML = `<strong>{{ $curriculum->language == 'sw' ? '✅ Kusoma kumekamilika!' : '✅ All notes read!' }}</strong>`;
+                        return;
+                    }
+
+                    currentPara = idx;
+                    highlightPara(idx);
+                    updateTrack();
+
+                    const text  = paragraphTexts[idx];
+                    const utter = new SpeechSynthesisUtterance(text);
+
+                    // Per-paragraph language check (handles mixed-language documents)
+                    utter.lang  = VoiceIntelligence.detectLang(text, curriculumLang);
+                    utter.rate  = VoiceIntelligence.getRate(utter.lang, speeds[speedIndex]);
+                    utter.pitch = 1;
+
+                    const voice = VoiceIntelligence.pickVoice(utter.lang);
+                    if (voice) utter.voice = voice;
+
+                    // Show brief preview of what's being read
+                    if (infoText) {
+                        const preview = text.length > 60 ? text.slice(0, 57) + '...' : text;
+                        infoText.innerHTML = `<strong>§${idx + 1}</strong> ${preview}`;
+                    }
+
+                    utter.onend = () => {
+                        if (isPlaying) speakParagraph(idx + 1); // auto-advance
+                    };
+                    utter.onerror = (e) => {
+                        if (e.error === 'interrupted') return; // intentional stop
+                        isPlaying = false;
+                        setPlayIcon(false);
+                    };
+
+                    speechSynthesis.speak(utter);
+                }
+
+                // ── Controls ─────────────────────────────────────────
+
+                // 🎧 Listen button (toolbar)
+                listenBtn.addEventListener('click', () => {
+                    if (playerOpen) {
+                        closePlayer();
+                    } else {
+                        openPlayer();
+                        // Auto-start playing
+                        isPlaying = true;
+                        isPaused  = false;
+                        setPlayIcon(true);
+                        speakParagraph(currentPara);
+                    }
+                });
+
+                // ▶/⏸ Play / Pause
+                playPauseBtn.addEventListener('click', () => {
+                    if (!playerOpen) {
+                        openPlayer();
+                    }
+                    if (isPlaying) {
+                        // Pause
+                        speechSynthesis.pause();
+                        isPlaying = false;
+                        isPaused  = true;
+                        setPlayIcon(false);
+                    } else if (isPaused) {
+                        // Resume
+                        speechSynthesis.resume();
+                        isPlaying = true;
+                        isPaused  = false;
+                        setPlayIcon(true);
+                    } else {
+                        // Start from current
+                        isPlaying = true;
+                        isPaused  = false;
+                        setPlayIcon(true);
+                        stopSpeech();
+                        speakParagraph(currentPara);
+                    }
+                });
+
+                // ⏮ Previous paragraph
+                prevBtn.addEventListener('click', () => {
+                    if (currentPara > 0) {
+                        stopSpeech();
+                        const target = currentPara - 1;
+                        if (isPlaying) {
+                            speakParagraph(target);
+                        } else {
+                            currentPara = target;
+                            highlightPara(target);
+                            updateTrack();
+                        }
+                    }
+                });
+
+                // ⏭ Next paragraph
+                nextBtn.addEventListener('click', () => {
+                    if (currentPara < paragraphTexts.length - 1) {
+                        stopSpeech();
+                        const target = currentPara + 1;
+                        if (isPlaying) {
+                            speakParagraph(target);
+                        } else {
+                            currentPara = target;
+                            highlightPara(target);
+                            updateTrack();
+                        }
+                    }
+                });
+
+                // ⏹ Stop
+                stopBtn.addEventListener('click', () => closePlayer());
+
+                // Speed cycle: 0.75 → 1 → 1.25 → 1.5 → 0.75 …
+                speedBadge.addEventListener('click', () => {
+                    speedIndex = (speedIndex + 1) % speeds.length;
+                    speedBadge.textContent = speeds[speedIndex] + '×';
+                    // Restart current paragraph with new speed if playing
+                    if (isPlaying) {
+                        stopSpeech();
+                        speakParagraph(currentPara);
+                    }
+                });
+
+                // Click on track bar to seek to a paragraph
+                trackBar.addEventListener('click', (e) => {
+                    const rect = trackBar.getBoundingClientRect();
+                    const ratio = (e.clientX - rect.left) / rect.width;
+                    const target = Math.floor(ratio * paragraphTexts.length);
+                    const clamped = Math.max(0, Math.min(target, paragraphTexts.length - 1));
+                    stopSpeech();
+                    currentPara = clamped;
+                    if (isPlaying) {
+                        speakParagraph(clamped);
+                    } else {
+                        highlightPara(clamped);
+                        updateTrack();
+                    }
+                });
+
+                // Clicking a paragraph step while player is open seeks to it
+                paragraphSteps.forEach((step, idx) => {
+                    step.addEventListener('dblclick', (e) => {
+                        if (!playerOpen) return;
+                        e.stopPropagation(); // don't also toggle read state
+                        stopSpeech();
+                        currentPara = idx;
+                        if (isPlaying) {
+                            speakParagraph(idx);
+                        } else {
+                            highlightPara(idx);
+                            updateTrack();
+                        }
+                    });
+                });
+
+                // Stop TTS when page unloads (navigating away)
+                window.addEventListener('beforeunload', () => speechSynthesis.cancel());
+
+            })(); // end initListenPlayer
 
         });
     </script>

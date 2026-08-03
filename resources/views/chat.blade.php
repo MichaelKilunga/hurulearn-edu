@@ -936,6 +936,127 @@
         //  AUDIO ENGINE  —  Speech Recognition (STT) + Synthesis (TTS)
         // ══════════════════════════════════════════════════════════
 
+        // ── Voice Intelligence Engine ────────────────────────────────
+        // Score-based language detection + natural voice selection
+        // Optimised for Tanzanian students (Swahili & English)
+        const VoiceIntelligence = {
+            _voices: [],
+
+            init() {
+                const load = () => { this._voices = speechSynthesis.getVoices(); };
+                this._voices = speechSynthesis.getVoices();
+                speechSynthesis.onvoiceschanged = load;
+            },
+
+            /**
+             * Score-based language detection.
+             * hintLang: 'sw-TZ' | 'en-US' | 'auto'
+             * 'auto' mode is Tanzania-first: defaults to Swahili unless English clearly dominates.
+             */
+            detectLang(text, hintLang) {
+                const words = text.toLowerCase()
+                    .replace(/[^a-z\s]/g, ' ')
+                    .split(/\s+/)
+                    .filter(w => w.length > 1);
+
+                if (!words.length) return 'sw-TZ';
+
+                const swSet = new Set([
+                    'na','ya','wa','kwa','ni','la','za','cha','mwa','pa','au','tu',
+                    'sana','zaidi','kidogo','vizuri','haraka','hapa','pale','sasa',
+                    'bado','tena','hata','pia','kabisa','kweli','kwanza',
+                    'hii','hizi','huo','hizo','hao','yote','zote','wake','wao',
+                    'yake','yao','huyu','hawa','hiyo','hili','haya','hilo',
+                    'iko','ipo','imo','yupo','wako','wapo','wamo','liko','lipo',
+                    'habari','asante','tafadhali','samahani','karibu','ndiyo',
+                    'hapana','sawa','nzuri','kwaheri','pole','hongera',
+                    'mwanafunzi','wanafunzi','mwalimu','walimu','shule','darasa',
+                    'kitabu','vitabu','somo','masomo','mtihani','swali','maswali',
+                    'jibu','majibu','elimu','lugha','kiswahili','hesabu','historia',
+                    'sayansi','kanuni','mada','sehemu','ubao','kalamu','faida',
+                    'kuhusu','jinsi','kwamba','lakini','ingawa','baada','kabla',
+                    'wakati','pamoja','badala','kama','bila','ikiwa','japo',
+                    'mimi','wewe','yeye','sisi','nyinyi',
+                    'kusoma','kuandika','kuelewa','kujua','kuona','kusikia',
+                    'kufanya','kuwa','kwenda','kurudi','kufika','kupata',
+                    'kujifunza','kuuliza','kujibu','kucheza','kufungua',
+                ]);
+
+                const enSet = new Set([
+                    'the','a','an','is','are','was','were','be','been','being',
+                    'have','has','had','do','does','did','will','would','could',
+                    'should','may','might','can','shall','must','need',
+                    'this','that','these','those','it','its','they','their','there',
+                    'he','she','we','you','your','our','my','his','her',
+                    'and','but','or','nor','for','so','yet','however','therefore',
+                    'because','although','though','while','when','where','which',
+                    'who','what','how','why','if','then','than','as',
+                    'at','in','on','of','to','from','with','by','about','into',
+                    'through','during','before','after','above','below','between',
+                    'not','no','never','also','just','now','here','very','well',
+                    'only','all','both','each','every','some','any','few','more',
+                    'such','like','even','still','already','yet','again',
+                ]);
+
+                let swScore = 0, enScore = 0;
+                for (const w of words) {
+                    if (swSet.has(w)) swScore++;
+                    if (enSet.has(w)) enScore++;
+                }
+
+                const total   = words.length;
+                const swRatio = swScore / total;
+                const enRatio = enScore / total;
+
+                if (hintLang === 'sw-TZ') {
+                    return (enRatio > swRatio * 2.2 && enRatio > 0.12) ? 'en-US' : 'sw-TZ';
+                }
+                if (hintLang === 'en-US') {
+                    return (swRatio > enRatio * 1.5 && swRatio > 0.06) ? 'sw-TZ' : 'en-US';
+                }
+                // auto / Tanzania-first
+                return (enRatio > swRatio * 1.8 && enRatio > 0.10) ? 'en-US' : 'sw-TZ';
+            },
+
+            /**
+             * Most natural voice for language.
+             * Google online > Neural/Natural > any matching locale > fallback.
+             * Swahili with no sw voice falls back to en-GB.
+             */
+            pickVoice(lang) {
+                const voices  = this._voices.length ? this._voices : speechSynthesis.getVoices();
+                const code    = lang.slice(0, 2);
+                const natural = v => !v.localService
+                    || v.name.includes('Google')
+                    || v.name.includes('Neural')
+                    || v.name.includes('Natural')
+                    || v.name.includes('Online');
+
+                if (code === 'sw') {
+                    return voices.find(v => v.name.includes('Google') && v.lang.startsWith('sw'))
+                        || voices.find(v => v.lang.startsWith('sw'))
+                        || voices.find(v => v.name.includes('Google') && v.lang === 'en-GB')
+                        || voices.find(v => v.name.includes('Google') && v.lang.startsWith('en'))
+                        || voices.find(v => v.lang === 'en-GB')
+                        || voices.find(v => natural(v) && v.lang.startsWith('en'))
+                        || voices.find(v => v.lang.startsWith('en'))
+                        || null;
+                }
+
+                return voices.find(v => natural(v) && v.lang === lang)
+                    || voices.find(v => natural(v) && v.lang.startsWith(code))
+                    || voices.find(v => v.lang === lang)
+                    || voices.find(v => v.lang.startsWith(code))
+                    || null;
+            },
+
+            /** Swahili slightly slower for syllable clarity. */
+            getRate(lang) {
+                return lang.startsWith('sw') ? 0.88 : 0.92;
+            },
+        };
+        VoiceIntelligence.init();
+
         let autoReadEnabled = false;
 
         // ── Text-to-Speech (TTS) ─────────────────────────────────
@@ -952,17 +1073,14 @@
 
                 const utter = new SpeechSynthesisUtterance(clean);
 
-                // Language detection: if text has Swahili-typical words use 'sw', else 'en'
-                const swWords = /\b(na|ya|wa|kwa|ni|la|za|cha|mwa|katika|kuhusu|jinsi|kwamba|lakini|pia|au|hii|hizo|hao|yote|zote|wake|wao|yake|yao|hata|bali|baada|kabla|sasa|tena|bado|tu|sana|zaidi|kidogo|vizuri|ndiyo|hapana|samahani|habari|asante|tafadhali)\b/i;
-                utter.lang = swWords.test(clean) ? 'sw-TZ' : 'en-US';
-                utter.rate = 0.95;
+                // Tanzania-first: auto-detect Swahili vs English by word frequency
+                utter.lang  = VoiceIntelligence.detectLang(clean, 'auto');
+                utter.rate  = VoiceIntelligence.getRate(utter.lang);
                 utter.pitch = 1;
 
-                // Pick a natural voice if available
-                const voices = speechSynthesis.getVoices();
-                const preferred = voices.find(v => v.lang.startsWith(utter.lang.slice(0, 2))) ||
-                                  voices.find(v => v.lang.startsWith('en'));
-                if (preferred) utter.voice = preferred;
+                // Most natural available voice for the detected language
+                const voice = VoiceIntelligence.pickVoice(utter.lang);
+                if (voice) utter.voice = voice;
 
                 this.utterance = utter;
                 this.activeBtn = btn;
@@ -992,9 +1110,7 @@
             }
         };
 
-        // Preload voices (needed in Chrome where voice list loads async)
-        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
-        speechSynthesis.getVoices();
+        // Voice list managed by VoiceIntelligence.init() above
 
         // ── Auto-Read Toggle ──────────────────────────────────────
         const autoReadToggle = document.getElementById('auto-read-toggle');
