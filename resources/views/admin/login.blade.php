@@ -11,30 +11,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --indigo: #1e1b4b;
-            --indigo-dark: #0b0a1e;
-            --indigo-mid: #16143a;
-            --blue: #3b82f6;
-            --blue-light: #60a5fa;
-            --amber: #f59e0b;
-            --amber-light: #fcd34d;
+            --primary: #1b3f8b; /* Navy Blue */
+            --primary-dark: #0f295e;
+            --blue: #1d4ed8;
+            --blue-light: #3b82f6;
+            --amber: #eab308;
+            --amber-light: #fef08a;
             --white: #ffffff;
-            --gray-100: #f1f5f9;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
             --danger: #ef4444;
-            --success: #10b981;
+            --success: #15803d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--indigo-dark);
-            color: var(--gray-100);
+            background: var(--bg);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -44,34 +41,8 @@
         }
 
         /* BACKGROUND DECORATIONS */
-        .bg-glow {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 1;
-            pointer-events: none;
-        }
-        .bg-glow-1 { top: -10%; left: -10%; }
-        .bg-glow-2 { bottom: -10%; right: -10%; }
-        .bg-glow-center {
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
-        }
-
-        .dots-grid {
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: 1;
-            pointer-events: none;
-        }
+        .bg-glow { display: none; }
+        .dots-grid { display: none; }
 
         /* LOGIN CONTAINER */
         .login-container {
@@ -90,14 +61,11 @@
 
         /* LOGIN CARD */
         .login-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 2.5rem 2rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
         }
 
         /* BRANDING */
@@ -111,7 +79,7 @@
         .brand-logo {
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, var(--amber), var(--blue));
+            background: var(--primary);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -120,19 +88,19 @@
             font-weight: 700;
             font-size: 1.6rem;
             color: #fff;
-            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 8px 24px rgba(27, 63, 139, 0.15);
             margin-bottom: 1rem;
         }
         .brand-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
-            color: #fff;
+            color: var(--primary);
             letter-spacing: -0.02em;
         }
         .brand-subtitle {
             font-size: 0.82rem;
-            color: var(--gray-500);
+            color: var(--text-muted);
             margin-top: 0.25rem;
             font-weight: 500;
         }
@@ -150,14 +118,14 @@
             animation: fadeIn 0.3s ease-out;
         }
         .alert-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #ef4444;
         }
         .alert-success {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #a7f3d0;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-5px); }
@@ -175,7 +143,7 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--gray-400);
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
             transition: color 0.2s;
         }
@@ -188,35 +156,36 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1rem;
-            color: var(--gray-500);
+            color: var(--text-muted);
             pointer-events: none;
             transition: color 0.2s;
         }
         .form-input {
             width: 100%;
             padding: 0.85rem 1rem 0.85rem 2.6rem;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
             border-radius: 12px;
-            color: #fff;
+            color: var(--text-main);
             font-size: 0.9rem;
             font-family: inherit;
             outline: none;
             transition: all 0.2s ease-in-out;
         }
         .form-input::placeholder {
-            color: var(--gray-600);
+            color: var(--text-muted);
+            opacity: 0.6;
         }
         .form-input:focus {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: var(--amber);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.1);
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(27, 63, 139, 0.1);
         }
         .form-input:focus + .input-icon {
-            color: var(--amber-light);
+            color: var(--primary);
         }
         .form-group:focus-within .form-label {
-            color: var(--amber-light);
+            color: var(--primary);
         }
 
         /* CHECKBOX / REMEMBER */
@@ -240,16 +209,16 @@
             width: 18px;
             height: 18px;
             border-radius: 6px;
-            border: 1.5px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.04);
+            border: 1.5px solid var(--border-color);
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
         }
         .remember-me input:checked + .checkbox-custom {
-            background: var(--amber);
-            border-color: var(--amber);
+            background: var(--primary);
+            border-color: var(--primary);
         }
         .checkbox-custom::after {
             content: '✓';
@@ -263,7 +232,7 @@
         }
         .remember-text {
             font-size: 0.82rem;
-            color: var(--gray-400);
+            color: var(--text-muted);
             font-weight: 500;
         }
 
@@ -276,10 +245,10 @@
             font-size: 0.92rem;
             font-weight: 700;
             color: #fff;
-            background: linear-gradient(135deg, var(--amber), #e67e22);
+            background: var(--primary);
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+            box-shadow: 0 4px 12px rgba(27, 63, 139, 0.2);
             transition: all 0.2s ease-in-out;
             display: flex;
             align-items: center;
@@ -287,8 +256,9 @@
             gap: 0.5rem;
         }
         .btn-submit:hover {
+            background: var(--primary-dark);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 6px 16px rgba(27, 63, 139, 0.3);
         }
         .btn-submit:active {
             transform: translateY(1px);
@@ -296,12 +266,12 @@
 
         /* FOOTER links */
         .login-footer {
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             text-align: center;
         }
         .login-footer a {
             font-size: 0.8rem;
-            color: var(--gray-500);
+            color: var(--text-muted);
             text-decoration: none;
             transition: color 0.2s;
             display: inline-flex;
@@ -309,7 +279,7 @@
             gap: 0.3rem;
         }
         .login-footer a:hover {
-            color: var(--gray-300);
+            color: var(--primary);
         }
     </style>
 </head>
@@ -407,6 +377,11 @@
                 </button>
 
             </form>
+
+            <!-- SMS Offline Access Info -->
+            <div class="sms-access-banner" style="margin-top: 1.5rem; padding: 0.85rem; background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; font-size: 0.8rem; text-align: center; color: #1e3a8a;">
+                📢 <strong>Offline SMS Access:</strong> Send keyword <strong>HURU</strong> to <strong>15054</strong> for offline learning and support.
+            </div>
 
             <div class="login-footer">
                 <a href="/">← Return to Public Website</a>

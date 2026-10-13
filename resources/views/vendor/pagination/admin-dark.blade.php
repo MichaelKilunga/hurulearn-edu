@@ -43,9 +43,9 @@
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
                             <span style="padding:.45rem .8rem; border-radius:8px; font-size:.82rem; font-weight:700;
-                                         background:linear-gradient(135deg, var(--amber), #e67e22);
+                                         background:var(--indigo);
                                          color:#fff; min-width:36px; text-align:center; cursor:default;
-                                         box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+                                         box-shadow:0 4px 12px rgba(27,63,139,0.2);">
                                 {{ $page }}
                             </span>
                         @else

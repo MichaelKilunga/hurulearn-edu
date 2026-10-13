@@ -9,52 +9,52 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --indigo: #1e1b4b;
-            --indigo-dark: #0f0d2e;
-            --blue: #3b82f6;
-            --blue-light: #60a5fa;
-            --amber: #f59e0b;
+            --primary: #1b3f8b; /* Deep Navy Blue */
+            --primary-dark: #0f295e;
+            --secondary: #1e293b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --success: #15803d;
+            --success-light: #dcfce7;
+            --accent: #eab308;
             --white: #ffffff;
-            --gray-100: #f3f4f6;
-            --gray-400: #9ca3af;
-            --gray-800: #1f2937;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--indigo-dark); color: var(--white); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         /* Nav */
         nav {
             padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(15,13,46,0.9); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border); z-index: 100;
+            background: #ffffff; border-bottom: 1px solid var(--border); z-index: 100;
         }
         .nav-left { display: flex; align-items: center; gap: 1rem; }
-        .back-btn { color: var(--gray-400); text-decoration: none; display: flex; align-items: center; gap: .5rem; font-size: .9rem; transition: color .2s; }
-        .back-btn:hover { color: #fff; }
-        .nav-title h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; max-width: 450px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .nav-title p { font-size: .72rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; }
-
+        .back-btn { color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: .5rem; font-size: .9rem; transition: color .2s; }
+        .back-btn:hover { color: var(--primary); }
+        .nav-title h1 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 700; max-width: 450px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .nav-title p { font-size: .72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+ 
         .split-container { flex: 1; display: flex; overflow: hidden; }
-
+ 
         /* Left Panel: Reading Material */
         .reading-panel {
-            flex: 1.2; padding: 3rem; overflow-y: auto; background: rgba(255,255,255,0.01);
+            flex: 1.2; padding: 3rem; overflow-y: auto; background: #ffffff;
             border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 1.8rem;
             scrollbar-width: thin; position: relative;
         }
         .reading-panel::-webkit-scrollbar { width: 6px; }
-        .reading-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .reading-panel::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.1); border-radius: 3px; }
         
-        .reading-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; line-height: 1.3; background: linear-gradient(135deg, #white 30%, var(--gray-400)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+        .reading-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; line-height: 1.3; color: var(--primary-dark); margin-bottom: 1rem; }
         .reading-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .tag-pill { font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--gray-400); text-transform: uppercase; font-weight: 600; }
-
-        .reading-summary { border-left: 3px solid var(--amber); padding-left: 1.2rem; margin: 0.5rem 0; font-style: italic; color: var(--gray-400); font-size: 0.98rem; line-height: 1.6; }
+        .tag-pill { font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; background: #f1f5f9; border: 1px solid var(--border); color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+ 
+        .reading-summary { border-left: 3px solid var(--accent); padding-left: 1.2rem; margin: 0.5rem 0; font-style: italic; color: var(--text-muted); font-size: 0.98rem; line-height: 1.6; }
         
-        .reading-body { font-size: 1.1rem; line-height: 1.8; color: var(--gray-100); display: flex; flex-direction: column; gap: 0.75rem; transition: font-size 0.2s ease; }
-
+        .reading-body { font-size: 1.1rem; line-height: 1.8; color: var(--text-main); display: flex; flex-direction: column; gap: 0.75rem; transition: font-size 0.2s ease; }
+ 
         /* Interactive Paragraph Steps */
         .paragraph-step {
             display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.85rem; 
@@ -62,128 +62,127 @@
             border: 1px solid transparent; cursor: pointer; position: relative;
         }
         .paragraph-step:hover {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.06);
+            background: #f1f5f9;
+            border-color: var(--border);
         }
         .paragraph-step.read {
-            background: rgba(20, 184, 166, 0.015);
-            border-color: rgba(20, 184, 166, 0.06);
+            background: rgba(21, 128, 61, 0.02);
+            border-color: rgba(21, 128, 61, 0.1);
         }
         .paragraph-step.read .step-checkbox {
-            border-color: #14b8a6 !important;
-            background: #14b8a6 !important;
-            color: #0f0d2e !important;
+            border-color: var(--success) !important;
+            background: var(--success) !important;
+            color: #ffffff !important;
         }
         .paragraph-step.read .paragraph-content p {
-            color: var(--gray-400);
+            color: var(--text-muted);
         }
-
+ 
         /* Right Panel: Interactive AI Tutor */
         .chat-panel {
-            flex: 0.9; display: flex; flex-direction: column; background: rgba(15,13,46,0.3);
+            flex: 0.9; display: flex; flex-direction: column; background: var(--bg);
             position: relative;
         }
         .chat-header {
             padding: 1.2rem 1.8rem; border-bottom: 1px solid var(--border);
-            background: rgba(15,13,46,0.5); backdrop-filter: blur(10px);
+            background: #ffffff; backdrop-filter: blur(10px);
             display: flex; justify-content: space-between; align-items: center;
         }
-        .chat-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: var(--amber); display: flex; align-items: center; gap: 0.5rem; }
-        .chat-header h3::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulse 1.5s infinite; }
-
+        .chat-header h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+        .chat-header h3::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); animation: pulse 1.5s infinite; }
+ 
         .chat-messages { flex: 1; overflow-y: auto; padding: 2rem 1.8rem; display: flex; flex-direction: column; gap: 1.5rem; scroll-behavior: smooth; }
         .chat-messages::-webkit-scrollbar { width: 4px; }
-        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
-
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.1); border-radius: 2px; }
+ 
         .message { display: flex; flex-direction: column; gap: 0.4rem; max-width: 85%; animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .message.own { align-self: flex-end; }
         .message.tutor { align-self: flex-start; }
-
-        .avatar-label { font-size: 0.72rem; color: var(--gray-400); font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
-        .message.own .avatar-label { justify-content: flex-end; color: var(--blue-light); }
-        .message.tutor .avatar-label { color: var(--amber); }
-
+        .avatar-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+        .message.own .avatar-label { justify-content: flex-end; color: var(--primary); }
+        .message.tutor .avatar-label { color: var(--success); }
+ 
         .msg-bubble {
             padding: 0.9rem 1.15rem; border-radius: 16px; font-size: 0.92rem; line-height: 1.6;
             word-wrap: break-word; text-align: left;
         }
-        .message.own .msg-bubble { background: linear-gradient(135deg, var(--blue), #1d4ed8); color: #fff; border-top-right-radius: 4px; }
-        .message.tutor .msg-bubble { background: var(--card-bg); border: 1px solid var(--border); color: var(--gray-100); border-top-left-radius: 4px; }
-
+        .message.own .msg-bubble { background: var(--primary); color: #fff; border-top-right-radius: 4px; }
+        .message.tutor .msg-bubble { background: #ffffff; border: 1px solid var(--border); color: var(--text-main); border-top-left-radius: 4px; }
+ 
         .typing-indicator { align-self: flex-start; padding: 0.5rem 1rem; display: flex; gap: 5px; }
-        .typing-indicator span { width: 7px; height: 7px; background: var(--amber); border-radius: 50%; opacity: 0.4; animation: typing 1.2s infinite ease-in-out; }
+        .typing-indicator span { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; opacity: 0.4; animation: typing 1.2s infinite ease-in-out; }
         .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
+ 
         /* Input area */
-        .chat-input-area { padding: 1.5rem 1.8rem; border-top: 1px solid var(--border); background: rgba(15,13,46,0.6); }
-        .chat-input-wrapper { display: flex; gap: 0.8rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 14px; padding: 0.5rem 0.8rem; align-items: center; transition: border-color 0.2s; }
-        .chat-input-wrapper:focus-within { border-color: var(--blue-light); }
-        .chat-input-wrapper textarea { flex: 1; background: transparent; border: none; color: #fff; outline: none; padding: 0.4rem; font-size: 0.92rem; resize: none; max-height: 80px; font-family: inherit; }
+        .chat-input-area { padding: 1.5rem 1.8rem; border-top: 1px solid var(--border); background: #ffffff; }
+        .chat-input-wrapper { display: flex; gap: 0.8rem; background: #f1f5f9; border: 1px solid var(--border); border-radius: 14px; padding: 0.5rem 0.8rem; align-items: center; transition: border-color 0.2s; }
+        .chat-input-wrapper:focus-within { border-color: var(--primary); }
+        .chat-input-wrapper textarea { flex: 1; background: transparent; border: none; color: var(--text-main); outline: none; padding: 0.4rem; font-size: 0.92rem; resize: none; max-height: 80px; font-family: inherit; }
         
-        .send-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--amber); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; transition: transform 0.2s, background 0.2s; }
-        .send-btn:hover { background: #d97706; transform: scale(1.03); }
+        .send-btn { width: 38px; height: 38px; border-radius: 10px; background: var(--primary); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; transition: transform 0.2s, background 0.2s; }
+        .send-btn:hover { background: var(--primary-dark); transform: scale(1.03); }
         .send-btn:active { transform: scale(0.97); }
-
+ 
         /* Suggestions block */
         .chat-suggestions { display: flex; gap: 0.6rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
-        .suggestion-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--gray-400); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-weight: 500; }
-        .suggestion-btn:hover { background: rgba(255,255,255,0.07); border-color: var(--amber); color: #fff; }
-
+        .suggestion-btn { background: #f1f5f9; border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 0.8rem; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+        .suggestion-btn:hover { background: #e2e8f0; border-color: var(--primary); color: var(--primary); }
+ 
         .btn { display: inline-flex; align-items: center; justify-content: center; padding: .6rem 1.3rem; border-radius: 10px; font-size: .875rem; font-weight: 600; cursor: pointer; border: none; transition: all .2s; text-decoration: none; font-family: inherit; }
-        .btn-outline { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: #fff; }
-        .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: var(--blue-light); }
-        .btn-primary { background: linear-gradient(135deg, var(--amber), #e67e22); color: #fff; box-shadow: 0 4px 15px rgba(245,158,11,0.25); }
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(245,158,11,0.35); }
-        .btn-ghost { background: rgba(255,255,255,0.06); color: var(--gray-300); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-ghost:hover { background: rgba(255,255,255,0.1); }
-
+        .btn-outline { background: #ffffff; border: 1.5px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: #eff6ff; border-color: var(--primary-dark); color: var(--primary-dark); }
+        .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(27, 63, 139, 0.25); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(27, 63, 139, 0.35); }
+        .btn-ghost { background: #f1f5f9; color: var(--text-muted); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: #e2e8f0; }
+ 
         @keyframes pulse {
             0% { transform: scale(0.9); opacity: 0.5; }
             50% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(0.9); opacity: 0.5; }
         }
-
+ 
         @keyframes typing {
             0%, 100% { transform: translateY(0); opacity: 0.4; }
             50% { transform: translateY(-5px); opacity: 1; }
         }
-
+ 
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+ 
         @keyframes confetti-fall {
             0% { transform: translateY(0) rotate(0deg); opacity: 1; }
             100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
         }
-
+ 
         /* ── Audio Feature Styles ────────────────────────────── */
         .btn-mic {
-            background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--gray-400); width: 38px; height: 38px; border-radius: 10px;
+            background: #f1f5f9; border: 1.5px solid var(--border);
+            color: var(--text-muted); width: 38px; height: 38px; border-radius: 10px;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
             font-size: 1rem; flex-shrink: 0; transition: all 0.25s ease;
         }
-        .btn-mic:hover { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: var(--blue-light); }
-        .btn-mic.recording { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); color: #ef4444; animation: mic-pulse 1.2s infinite ease-in-out; }
+        .btn-mic:hover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+        .btn-mic.recording { background: #fee2e2; border-color: #fca5a5; color: #ef4444; animation: mic-pulse 1.2s infinite ease-in-out; }
         .btn-mic.unsupported { display: none; }
-
+ 
         @keyframes mic-pulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
             50%       { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
         }
-
+ 
         /* Auto-Read Toggle */
         .btn-auto-read {
-            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--gray-400); padding: 0.35rem 0.75rem; border-radius: 8px;
+            background: #f1f5f9; border: 1.5px solid var(--border);
+            color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 8px;
             font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
         }
-        .btn-auto-read:hover { background: rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.3); color: #a78bfa; }
-        .btn-auto-read.active { background: rgba(167, 139, 250, 0.15); border-color: rgba(167, 139, 250, 0.5); color: #c4b5fd; }
-
+        .btn-auto-read:hover { background: rgba(27, 63, 139, 0.1); border-color: rgba(27, 63, 139, 0.3); color: var(--primary); }
+        .btn-auto-read.active { background: rgba(27, 63, 139, 0.15); border-color: var(--primary); color: var(--primary); }
+ 
         /* Read-Aloud Button */
         .btn-read-aloud {
             background: transparent; border: none; color: rgba(156, 163, 175, 0.5);
@@ -191,11 +190,11 @@
             display: flex; align-items: center; gap: 4px; transition: all 0.2s;
             align-self: flex-start; margin-top: 2px;
         }
-        .btn-read-aloud:hover { color: #a78bfa; background: rgba(167, 139, 250, 0.1); }
-        .btn-read-aloud.speaking { color: #a78bfa; }
+        .btn-read-aloud:hover { color: var(--primary); background: rgba(27, 63, 139, 0.1); }
+        .btn-read-aloud.speaking { color: var(--primary); }
         .btn-read-aloud .wave { display: inline-flex; gap: 2px; align-items: flex-end; height: 11px; }
         .btn-read-aloud .wave span {
-            display: inline-block; width: 2px; background: #a78bfa;
+            display: inline-block; width: 2px; background: var(--primary);
             border-radius: 2px; animation: wave-bar 0.8s infinite ease-in-out;
         }
         .btn-read-aloud .wave span:nth-child(1) { height: 4px;  animation-delay: 0s; }
@@ -207,23 +206,23 @@
             0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
             50%       { transform: scaleY(1); opacity: 1; }
         }
-
+ 
         /* Mic banner */
         #mic-status-banner {
-            padding: 0.45rem 1.8rem; background: rgba(239, 68, 68, 0.08);
-            border-top: 1px solid rgba(239, 68, 68, 0.18); font-size: 0.78rem;
-            color: #fca5a5; display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.45rem 1.8rem; background: #fee2e2;
+            border-top: 1px solid #fca5a5; font-size: 0.78rem;
+            color: #ef4444; display: flex; align-items: center; gap: 0.5rem;
         }
         #mic-status-banner .pulse-dot { width: 7px; height: 7px; background: #ef4444; border-radius: 50%; animation: mic-pulse 1s infinite; flex-shrink: 0; }
-
+ 
         /* ── Listen to Notes Player ────────────────────────────── */
-
+ 
         /* Floating sticky player bar at bottom of reading panel */
         #listen-player {
             position: sticky; bottom: 0;
-            background: rgba(10, 9, 35, 0.96);
+            background: #ffffff;
             backdrop-filter: blur(16px);
-            border-top: 1px solid rgba(167, 139, 250, 0.25);
+            border-top: 1px solid var(--border);
             padding: 0.9rem 1.2rem;
             display: none;         /* shown when listening starts */
             flex-direction: column;
@@ -236,76 +235,77 @@
             from { opacity: 0; transform: translateY(12px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-
+ 
         /* Player track bar */
         .player-track {
             display: flex; align-items: center; gap: 0.65rem;
         }
         .player-track-bar {
-            flex: 1; height: 4px; background: rgba(255,255,255,0.08);
+            flex: 1; height: 4px; background: #e2e8f0;
             border-radius: 4px; overflow: hidden; cursor: pointer;
         }
         .player-track-fill {
             height: 100%;
-            background: linear-gradient(90deg, #a78bfa, #60a5fa);
+            background: var(--primary);
             border-radius: 4px;
             transition: width 0.4s linear;
             width: 0%;
         }
         .player-track-label {
-            font-size: 0.7rem; color: var(--gray-400); white-space: nowrap; min-width: 60px; text-align: right;
+            font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; min-width: 60px; text-align: right;
         }
-
+ 
         /* Player controls */
         .player-controls {
             display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
         }
         .btn-player {
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-            color: #e5e7eb; border-radius: 10px; padding: 0.4rem 0.8rem;
+            background: #f1f5f9; border: 1.5px solid var(--border);
+            color: var(--text-main); border-radius: 10px; padding: 0.4rem 0.8rem;
             font-size: 0.78rem; font-weight: 600; cursor: pointer;
             display: flex; align-items: center; gap: 0.4rem;
             transition: all 0.2s; white-space: nowrap;
         }
-        .btn-player:hover { background: rgba(167,139,250,0.15); border-color: rgba(167,139,250,0.4); color: #c4b5fd; }
-        .btn-player.active { background: rgba(167,139,250,0.2); border-color: #a78bfa; color: #c4b5fd; }
+        .btn-player:hover { background: rgba(27, 63, 139, 0.1); border-color: rgba(27, 63, 139, 0.3); color: var(--primary); }
+        .btn-player.active { background: rgba(27, 63, 139, 0.15); border-color: var(--primary); color: var(--primary); }
         .btn-player.btn-play-pause {
-            background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            background: var(--primary);
             border: none; color: #fff; padding: 0.45rem 1rem;
-            box-shadow: 0 3px 10px rgba(124,58,237,0.3);
+            box-shadow: 0 3px 10px rgba(27, 63, 139, 0.2);
         }
-        .btn-player.btn-play-pause:hover { box-shadow: 0 4px 14px rgba(124,58,237,0.45); transform: scale(1.03); }
-
+        .btn-player.btn-play-pause:hover { background: var(--primary-dark); box-shadow: 0 4px 14px rgba(27, 63, 139, 0.35); transform: scale(1.03); }
+ 
         .player-info {
-            flex: 1; font-size: 0.75rem; color: var(--gray-400);
+            flex: 1; font-size: 0.75rem; color: var(--text-muted);
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        .player-info strong { color: #a78bfa; font-weight: 700; }
-
+        .player-info strong { color: var(--primary); font-weight: 700; }
+ 
         /* Speed badge */
         .speed-badge {
-            font-size: 0.7rem; font-weight: 700; background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1); color: var(--gray-400);
+            font-size: 0.7rem; font-weight: 700; background: #f1f5f9;
+            border: 1px solid var(--border); color: var(--text-muted);
             padding: 0.3rem 0.55rem; border-radius: 7px; cursor: pointer;
             transition: all 0.2s; min-width: 42px; text-align: center;
         }
-        .speed-badge:hover { background: rgba(167,139,250,0.15); border-color: rgba(167,139,250,0.4); color: #a78bfa; }
-
+        .speed-badge:hover { background: rgba(27, 63, 139, 0.1); border-color: var(--primary); color: var(--primary); }
+ 
         /* Paragraph currently being read – highlight */
         .paragraph-step.listening-active {
-            background: rgba(124, 58, 237, 0.07) !important;
-            border-color: rgba(124, 58, 237, 0.25) !important;
-            box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.15);
+            background: rgba(27, 63, 139, 0.05) !important;
+            border-color: rgba(27, 63, 139, 0.2) !important;
+            box-shadow: 0 0 0 1px rgba(27, 63, 139, 0.15);
         }
         .paragraph-step.listening-active .paragraph-content p {
-            color: #e9d5ff !important;
+            color: var(--primary-dark) !important;
+            font-weight: 600;
         }
-
+ 
         /* Listen button in toolbar */
         .btn-listen {
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            color: #c4b5fd;
+            background: rgba(27, 63, 139, 0.1);
+            border: 1.5px solid rgba(27, 63, 139, 0.25);
+            color: var(--primary);
             padding: 0.3rem 0.8rem;
             border-radius: 8px;
             font-size: 0.75rem;
@@ -317,8 +317,8 @@
             align-items: center;
             gap: 0.35rem;
         }
-        .btn-listen:hover { background: rgba(124,58,237,0.22); border-color: #a78bfa; color: #e9d5ff; }
-        .btn-listen.listening { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+        .btn-listen:hover { background: rgba(27,63,139,0.15); border-color: var(--primary); color: var(--primary-dark); }
+        .btn-listen.listening { background: #fee2e2; border-color: #fca5a5; color: #ef4444; }
 
         @media (max-width: 900px) {
             .split-container { flex-direction: column; }
@@ -350,14 +350,14 @@
         <!-- Left Panel: Content -->
         <article class="reading-panel">
             <!-- Sticky Reading progress & font controllers -->
-            <div style="position: sticky; top: -3.1rem; background: rgba(15,13,46,0.95); backdrop-filter: blur(12px); padding: 1rem 0; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
+            <div style="position: sticky; top: -3.1rem; background: #ffffff; backdrop-filter: blur(12px); padding: 1rem 0; z-index: 10; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%;">
                 <div style="flex: 1;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.75rem;">
-                        <span style="color: var(--gray-400); font-weight: 600; letter-spacing: 0.05em;">PROGRESS / MAENDELEO:</span>
-                        <span id="reading-percent" style="color: var(--amber); font-weight: 700;">0% Completed</span>
+                        <span style="color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em;">PROGRESS / MAENDELEO:</span>
+                        <span id="reading-percent" style="color: var(--primary); font-weight: 700;">0% Completed</span>
                     </div>
-                    <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden;">
-                        <div id="reading-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--amber), #14b8a6); border-radius: 4px; transition: width 0.3s ease;"></div>
+                    <div style="width: 100%; height: 6px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+                        <div id="reading-progress-bar" style="width: 0%; height: 100%; background: var(--primary); border-radius: 4px; transition: width 0.3s ease;"></div>
                     </div>
                 </div>
                 
@@ -368,10 +368,10 @@
                         Listen
                     </button>
                     <!-- Font scaler controls -->
-                    <div style="display: flex; align-items: center; gap: 0.3rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.15rem 0.45rem; border-radius: 8px;">
-                        <button type="button" id="font-dec" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Smaller text">A-</button>
-                        <button type="button" id="font-reset" style="background: transparent; border: none; color: var(--amber); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Reset text size">A</button>
-                        <button type="button" id="font-inc" style="background: transparent; border: none; color: var(--gray-400); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 600;" title="Larger text">A+</button>
+                    <div style="display: flex; align-items: center; gap: 0.3rem; background: #f1f5f9; border: 1px solid var(--border); padding: 0.15rem 0.45rem; border-radius: 8px;">
+                        <button type="button" id="font-dec" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Smaller text">A-</button>
+                        <button type="button" id="font-reset" style="background: transparent; border: none; color: var(--primary); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 800;" title="Reset text size">A</button>
+                        <button type="button" id="font-inc" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 0.2rem 0.4rem; font-size: 0.7rem; font-weight: 700;" title="Larger text">A+</button>
                     </div>
                 </div>
             </div>
@@ -414,7 +414,7 @@
 
             <!-- Complete Topic Action Button -->
             <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center;">
-                <button type="button" id="complete-topic-btn" class="btn btn-outline" style="padding: 0.85rem 2rem; font-size: 0.95rem; border-color: #14b8a6; color: #fff; background: rgba(20, 184, 166, 0.05); gap: 0.75rem; border-radius: 12px; transition: all 0.3s ease;">
+                <button type="button" id="complete-topic-btn" class="btn btn-outline" style="padding: 0.85rem 2rem; font-size: 0.95rem; border-color: var(--success); color: var(--success); background: #f0fdf4; gap: 0.75rem; border-radius: 12px; transition: all 0.3s ease; font-weight: 700;">
                     <span id="complete-btn-icon">🔘</span>
                     <span id="complete-btn-text">Mark Topic as Completed</span>
                 </button>
@@ -459,7 +459,7 @@
                 <h3>AI Study Assistant</h3>
                 <div style="display: flex; align-items: center; gap: 0.6rem;">
                     <button id="auto-read-toggle" class="btn-auto-read" title="Auto-read AI responses aloud">🔊 Auto</button>
-                    <span style="font-size: 0.75rem; color: var(--gray-400);">Guided Tutoring</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Guided Tutoring</span>
                 </div>
             </div>
 
@@ -512,11 +512,11 @@
     </div>
 
     <!-- Celebration Modal overlay -->
-    <div id="completion-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,13,46,0.85); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-        <div style="background: var(--indigo-dark); border: 1px solid var(--border); max-width: 460px; width: 90%; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s ease;" id="completion-modal-content">
+    <div id="completion-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="background: #ffffff; border: 1px solid var(--border); max-width: 460px; width: 90%; border-radius: 24px; padding: 2.5rem 2rem; text-align: center; box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1); transform: scale(0.9); transition: transform 0.3s ease;" id="completion-modal-content">
             <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎉</div>
-            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; color: var(--white); margin-bottom: 0.5rem;">Hongera! Congratulations!</h3>
-            <p style="font-size: 0.95rem; color: var(--gray-400); line-height: 1.55; margin-bottom: 2rem;">
+            <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; color: var(--primary-dark); margin-bottom: 0.5rem;">Hongera! Congratulations!</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 2rem;">
                 @if($curriculum->language == 'sw')
                     Umekamilisha kusoma mada hii ya **"{{ $curriculum->title }}"**. Je, uko tayari kujipima uelewa wako na Mwalimu wetu wa AI?
                 @else
@@ -527,7 +527,7 @@
                 <button id="modal-quiz-btn" class="btn btn-primary" style="justify-content: center; font-size: 0.95rem; padding: 0.8rem;">
                     📝 Quiz Me Now / Nipime Maswali
                 </button>
-                <button id="modal-close-btn" class="btn btn-ghost" style="justify-content: center; font-size: 0.9rem; padding: 0.7rem; border-color: transparent;">
+                <button id="modal-close-btn" class="btn btn-ghost" style="justify-content: center; font-size: 0.9rem; padding: 0.7rem; border-color: var(--border); color: var(--text-muted);">
                     Tutaendelea Baadaye / Maybe Later
                 </button>
             </div>

@@ -72,13 +72,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
         :root {
-            --primary: #3b82f6;
-            --secondary: #1e1b4b;
-            --accent: #f59e0b;
-            --bg: #0f0d2e;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --text: #ffffff;
-            --text-muted: #9ca3af;
+            --primary: #1b3f8b; /* Deep Navy Blue */
+            --primary-dark: #0f295e;
+            --secondary: #1e293b; /* Slate Dark */
+            --accent: #eab308; /* Flag Gold */
+            --bg: #f8fafc; /* Clean Light Slate */
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --success: #15803d; /* Flag Green */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -101,6 +104,10 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            background: var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
         }
 
         .screen {
@@ -119,25 +126,24 @@
         #auth-screen {
             justify-content: center;
             padding: 2rem;
+            background: var(--bg);
         }
 
         .auth-card {
             background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
             border-radius: 24px;
             padding: 3rem 2rem;
-            backdrop-filter: blur(20px);
             text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
         }
 
         .auth-header h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2rem;
             margin: 1.5rem 0 0.5rem;
-            background: linear-gradient(135deg, #fff, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         .auth-header p {
@@ -150,7 +156,7 @@
         .logo {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--accent), var(--primary));
+            background: var(--primary);
             color: white;
             border-radius: 16px;
             display: flex;
@@ -159,7 +165,7 @@
             font-weight: 900;
             font-size: 1.4rem;
             margin: 0 auto;
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 20px rgba(27, 63, 139, 0.2);
         }
 
         .input-group {
@@ -179,9 +185,9 @@
             width: 100%;
             padding: 1rem 1.2rem;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            border: 1.5px solid var(--border-color);
+            background: #ffffff;
+            color: var(--text);
             font-size: 1rem;
             outline: none;
             transition: all 0.2s;
@@ -189,8 +195,8 @@
 
         .input-group input:focus {
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(27, 63, 139, 0.1);
         }
 
         .btn-primary {
@@ -198,32 +204,33 @@
             padding: 1.1rem;
             border-radius: 12px;
             border: none;
-            background: linear-gradient(135deg, var(--accent), #e67e22);
+            background: var(--primary);
             color: white;
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 4px 12px rgba(27, 63, 139, 0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(245, 158, 11, 0.4);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 16px rgba(27, 63, 139, 0.3);
         }
 
         /* Chat Screen */
         #chat-screen {
-            background: rgba(15,13,46,0.5);
+            background: var(--bg);
         }
 
         .chat-header {
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(15, 13, 46, 0.8);
+            background: #ffffff;
             backdrop-filter: blur(16px);
             z-index: 10;
         }
@@ -246,11 +253,12 @@
             font-size: 1.1rem;
             margin: 0;
             font-weight: 700;
+            color: var(--text);
         }
 
         .status {
             font-size: 0.75rem;
-            color: #10b981;
+            color: var(--success);
             display: flex;
             align-items: center;
             gap: 4px;
@@ -259,14 +267,14 @@
             content: '';
             width: 6px;
             height: 6px;
-            background: #10b981;
+            background: var(--success);
             border-radius: 50%;
             display: inline-block;
         }
 
         .btn-logout {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: #f1f5f9;
+            border: 1.5px solid var(--border-color);
             color: var(--text-muted);
             padding: 0.5rem 1rem;
             border-radius: 8px;
@@ -277,15 +285,15 @@
         }
 
         .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.2);
+            background: #fee2e2;
+            border-color: #fca5a5;
             color: #ef4444;
         }
 
         .btn-community {
-            background: rgba(20, 184, 166, 0.1);
-            border: 1px solid rgba(20, 184, 166, 0.25);
-            color: #2dd4bf;
+            background: rgba(21, 128, 61, 0.1);
+            border: 1.5px solid rgba(21, 128, 61, 0.3);
+            color: #15803d;
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 0.8rem;
@@ -298,9 +306,9 @@
         }
 
         .btn-community:hover {
-            background: rgba(20, 184, 166, 0.2);
-            border-color: #2dd4bf;
-            color: #5eead4;
+            background: rgba(21, 128, 61, 0.15);
+            border-color: #15803d;
+            color: #166534;
         }
 
         .chat-messages {
@@ -316,7 +324,7 @@
         /* Custom Scrollbar */
         .chat-messages::-webkit-scrollbar { width: 6px; }
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
-        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(15, 23, 42, 0.1); border-radius: 10px; }
 
         .message {
             max-width: 85%;
@@ -329,36 +337,37 @@
         }
 
         .message.inbound {
-            background: rgba(255, 255, 255, 0.07);
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
-            color: #e5e7eb;
+            color: var(--text);
         }
 
         .message.outbound {
-            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            background: var(--primary);
             color: white;
             align-self: flex-end;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 12px rgba(27, 63, 139, 0.15);
         }
 
         .chat-input-area {
             padding: 1.2rem 1.5rem;
             display: flex;
             gap: 1rem;
-            background: rgba(15, 13, 46, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #ffffff;
+            border-top: 1px solid var(--border-color);
             backdrop-filter: blur(16px);
         }
 
         .chat-input-area input {
             flex: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f1f5f9;
+            border: 1.5px solid var(--border-color);
             border-radius: 30px;
             padding: 0.9rem 1.5rem;
-            color: white;
+            color: var(--text);
             font-size: 1rem;
             outline: none;
             transition: all 0.2s;
@@ -366,11 +375,11 @@
 
         .chat-input-area input:focus {
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.08);
+            background: #ffffff;
         }
 
         .btn-send {
-            background: linear-gradient(135deg, var(--primary), #2563eb);
+            background: var(--primary);
             color: white;
             border: none;
             width: 50px;
@@ -381,12 +390,13 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(27, 63, 139, 0.2);
         }
 
         .btn-send:hover {
             transform: scale(1.05) rotate(-10deg);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 16px rgba(27, 63, 139, 0.3);
         }
 
         .typing-indicator {
@@ -409,55 +419,56 @@
         .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
 
         .filter-bar {
-        padding: 0.8rem 1.5rem;
-        background: rgba(15, 13, 46, 0.4);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
+            padding: 0.8rem 1.5rem;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-    .filter-group {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
 
-    .filter-group input {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        padding: 0.5rem 0.8rem;
-        color: white;
-        font-size: 0.85rem;
-        outline: none;
-    }
+        .filter-group input {
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem 0.8rem;
+            color: var(--text);
+            font-size: 0.85rem;
+            outline: none;
+        }
 
-    #keyword-search { flex: 1; }
-    #date-filter { width: 140px; color-scheme: dark; }
+        #keyword-search { flex: 1; }
+        #date-filter { width: 140px; }
 
-    .btn-filter {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: opacity 0.2s;
-    }
+        .btn-filter {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-filter:hover { background: var(--primary-dark); }
 
-    .btn-reset {
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--text-muted);
-    }
+        .btn-reset {
+            background: #e2e8f0;
+            color: var(--text-muted);
+        }
 
-    .search-status {
-        margin-top: 0.5rem;
-        font-size: 0.75rem;
-        color: var(--accent);
-        font-weight: 500;
-    }
+        .search-status {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
 
-    .hidden { display: none !important; }
+        .hidden { display: none !important; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px) scale(0.95); }
@@ -473,8 +484,8 @@
 
         /* Microphone Button */
         .btn-mic {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #f1f5f9;
+            border: 1.5px solid var(--border-color);
             color: var(--text-muted);
             width: 50px;
             height: 50px;
@@ -489,14 +500,14 @@
             position: relative;
         }
         .btn-mic:hover {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.4);
+            background: #eff6ff;
+            border-color: var(--primary);
             color: var(--primary);
             transform: scale(1.05);
         }
         .btn-mic.recording {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: rgba(239, 68, 68, 0.5);
+            background: #fee2e2;
+            border-color: #fca5a5;
             color: #ef4444;
             animation: mic-pulse 1.2s infinite ease-in-out;
         }
@@ -511,8 +522,8 @@
 
         /* Auto-Read Toggle Button */
         .btn-auto-read {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f1f5f9;
+            border: 1.5px solid var(--border-color);
             color: var(--text-muted);
             padding: 0.5rem 0.9rem;
             border-radius: 8px;
@@ -523,14 +534,14 @@
             white-space: nowrap;
         }
         .btn-auto-read:hover {
-            background: rgba(167, 139, 250, 0.1);
-            border-color: rgba(167, 139, 250, 0.3);
-            color: #a78bfa;
+            background: rgba(27, 63, 139, 0.1);
+            border-color: rgba(27, 63, 139, 0.3);
+            color: var(--primary);
         }
         .btn-auto-read.active {
-            background: rgba(167, 139, 250, 0.15);
-            border-color: rgba(167, 139, 250, 0.5);
-            color: #c4b5fd;
+            background: rgba(27, 63, 139, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         /* Read-Aloud Button on AI message bubbles */
@@ -563,11 +574,11 @@
             line-height: 1;
         }
         .btn-read-aloud:hover {
-            color: #a78bfa;
-            background: rgba(167, 139, 250, 0.1);
+            color: var(--primary);
+            background: rgba(27, 63, 139, 0.1);
         }
         .btn-read-aloud.speaking {
-            color: #a78bfa;
+            color: var(--primary);
         }
         .btn-read-aloud .wave {
             display: inline-flex;
@@ -578,7 +589,7 @@
         .btn-read-aloud .wave span {
             display: inline-block;
             width: 2px;
-            background: #a78bfa;
+            background: var(--primary);
             border-radius: 2px;
             animation: wave-bar 0.8s infinite ease-in-out;
         }
@@ -596,10 +607,10 @@
         /* Mic status banner */
         #mic-status-banner {
             padding: 0.5rem 1.5rem;
-            background: rgba(239, 68, 68, 0.1);
-            border-top: 1px solid rgba(239, 68, 68, 0.2);
+            background: #fee2e2;
+            border-top: 1px solid #fca5a5;
             font-size: 0.8rem;
-            color: #fca5a5;
+            color: #ef4444;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -632,7 +643,7 @@
                 <p>Register with your phone number to start asking questions directly to our AI tutor.</p>
             </div>
             @if(session('error'))
-                <div class="auth-error-alert" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.75rem; border-radius: 12px; color: #fca5a5; margin-bottom: 1.5rem; font-size: .85rem; font-weight: 500; text-align: center;">
+                <div class="auth-error-alert" style="background: #fee2e2; border: 1px solid #fca5a5; padding: 0.75rem; border-radius: 12px; color: #ef4444; margin-bottom: 1.5rem; font-size: .85rem; font-weight: 600; text-align: center;">
                     {{ session('error') }}
                 </div>
             @endif
