@@ -35,11 +35,10 @@ class AiService
                 return ['text' => 'System error: AI unavailable.', 'tokens' => null];
             }
 
-            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=' . $apiKey;
+            $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=' . $apiKey;
 
             $response = Http::withoutVerifying()->withHeaders([
                 'Content-Type' => 'application/json',
-                'X-Goog-Api-Key' => $apiKey,
             ])->retry(3, 1000)->post($url, [
                 'contents' => [['parts' => [['text' => $prompt]]]],
                 'generationConfig' => [
@@ -63,14 +62,14 @@ class AiService
                 return [
                     'text' => 'BANNED_CONTENT_DETECTED',
                     'tokens' => $data['usageMetadata'] ?? null,
-                    'model' => 'gemini-flash-lite-latest'
+                    'model' => 'gemini-3.8-flash'
                 ];
             }
 
             return [
                 'text' => $sanitizedText ?? 'Samahani, sikuelewa.',
                 'tokens' => $data['usageMetadata'] ?? null,
-                'model' => 'gemini-flash-lite-latest'
+                'model' => 'gemini-3.8-flash'
             ];
 
         } catch (\Throwable $e) {
